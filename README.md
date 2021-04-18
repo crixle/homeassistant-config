@@ -28,6 +28,7 @@
 | State-Switch | [link](https://github.com/thomasloven/lovelace-state-switch) |
 | Home Feed Card | [link](https://github.com/gadgetchnnel/lovelace-home-feed-card) |
 | Mini Media Player | [link](https://github.com/kalkih/mini-media-player) |
+| Theme | [link](https://github.com/basnijholt/lovelace-ios-themes)
 
 ### Light Mode  
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/light.PNG "Light Variant")
