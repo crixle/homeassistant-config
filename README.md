@@ -12,7 +12,5 @@
 | Light Popup Card | [github](https://github.com/DBuit/light-popup-card) |
 | Browser Mod | [github](https://github.com/thomasloven/hass-browser_mod) |
 
-### Screens
-
-Mobile:    
-![alt text](https://github.com/dmatik/homeassistant-config/blob/master/images/screens/ha_responsive.gif "Responsive UI")
+### Light Mode  
+![alt text](https://github.com/crixle/homeassistant-config/blob/main/light.PNG "Light Variant")
