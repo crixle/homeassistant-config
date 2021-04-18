@@ -1,0 +1,1666 @@
+kiosk_mode:
+  non_admin_settings:
+    hide_header: true
+    hide_sidebar: true
+button_card_templates:
+  color_light:
+    styles:
+      card:
+        - border-radius: 50%
+        - height: 4em
+        - width: 4em
+        - margin: 4px
+  popup:
+    hold_action:
+      action: fire-dom-event
+      browser_mod:
+        command: popup
+        hide_header: true
+        title: |
+          [[[ return entity.attributes.friendly_name ]]]
+        card:
+          type: entities
+          entities:
+            - type: 'custom:light-popup-card'
+              entity: |
+                [[[ return entity.entity_id ]]]
+              icon: none
+              fullscreen: false
+              brightnessWidth: 130px
+              brightnessHeight: 360px
+              borderRadius: 1.7em
+              sliderColoredByLight: true
+              sliderTrackColor: 'rgba(25, 25, 25, 0.9)'
+            - type: 'custom:hui-element'
+              card_type: horizontal-stack
+              card_mod:
+                style: |
+                  #root {
+                    justify-content: center;
+                    margin-top: 2em;
+                  }
+              cards:
+                - type: 'custom:button-card'
+                  styles:
+                    card:
+                      - background: '#d8d9e1'
+                  tap_action:
+                    action: call-service
+                    service: light.turn_on
+                    service_data:
+                      entity_id: |
+                        [[[ return entity.entity_id ]]]
+                      color_temp: 153
+                  template: color_light
+                - type: 'custom:button-card'
+                  styles:
+                    card:
+                      - background: '#d5b08d'
+                  tap_action:
+                    action: call-service
+                    service: light.turn_on
+                    service_data:
+                      entity_id: |
+                        [[[ return entity.entity_id ]]]
+                      color_temp: 326
+                  template: color_light
+            - type: 'custom:hui-element'
+              card_type: horizontal-stack
+              card_mod:
+                style: |
+                  #root {
+                    justify-content: center;
+                    margin-bottom: 1em;
+                  }
+              cards:
+                - type: 'custom:button-card'
+                  styles:
+                    card:
+                      - background: '#ce944b'
+                  tap_action:
+                    action: call-service
+                    service: light.turn_on
+                    service_data:
+                      entity_id: |
+                        [[[ return entity.entity_id ]]]
+                      color_temp: 500
+                  template: color_light
+                - type: 'custom:button-card'
+                  styles:
+                    card:
+                      - background: >-
+                          radial-gradient(circle, rgba(255, 255, 255, 1) 0%,
+                          rgba(255, 255, 255, 0) 80%),  conic-gradient(rgb(120,
+                          39, 230), rgb(230, 34, 231), rgb(228, 5, 136),
+                          rgb(228, 25, 25),  rgb(229, 105, 30), rgb(232, 226,
+                          46), rgb(125, 230, 41), rgb(52, 232, 40), rgb(51, 231,
+                          92),  rgb(52, 232, 224), rgb(32, 125, 229), rgb(18,
+                          39, 229), rgb(120, 39, 230))
+                  tap_action:
+                    action: fire-dom-event
+                    browser_mod:
+                      command: popup
+                      title: |
+                        [[[ return entity.attributes.friendly_name ]]]
+                      card:
+                        type: 'custom:light-entity-card'
+                        entity: |
+                          [[[ return entity.entity_id ]]]
+                        brightness: true
+                        color_temp: true
+                        full_width_sliders: false
+                        hide_header: true
+                        show_slider_percent: true
+                        smooth_color_wheel: true
+                        persist_features: true
+                        consolidate_entities: true
+                  template: color_light
+  scene:
+    styles:
+      icon:
+        - height: 40px
+      card:
+        - background: 'rgba(255,255,255,.1)'
+        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+    extra_styles: |
+      ha-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px yellow;
+        background: white;
+        }
+  vacuum:
+    aspect_ratio: 1/1
+    extra_styles: |
+      ha-card:hover {
+        transform: scale(1.05);
+        }
+    styles:
+      state:
+        - font-size: 20px
+      card:
+        - border-radius: 30px
+        - font-family: DM Sans
+        - aspect-ratio: 1/1
+        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+        - background: 'rgba(255,255,255,.1'
+    state:
+      - value: cleaning
+        styles:
+          card:
+            - background: 'rgba(255,255,255,.8)'
+            - border: 1px solid white
+            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+          state:
+            - animation: blink 2s ease infinite
+            - color: 'rgb(100,100,255)'
+          icon:
+            - color: 'rgb(100,100,255)'
+  tv:
+    aspect_ratio: 1/1
+    extra_styles: |
+      ha-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px;
+        }
+    styles:
+      state:
+        - font-size: 20px
+      card:
+        - border-radius: 30px
+        - aspect-ratio: 1/1
+        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+        - background: 'rgba(255,255,255,.1'
+    state:
+      - value: playing
+        styles:
+          card:
+            - background: 'rgba(255,255,255,.8)'
+            - border: 1px solid white
+            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+          state:
+            - animation: blink 2s ease infinite
+            - color: 'rgb(100,100,255)'
+          icon:
+            - color: 'rgb(100,100,255)'
+          name:
+            - font-weight: bold
+            - color: 'rgba(0,0,0,.6)'
+  fan:
+    aspect_ratio: 1/1
+    extra_styles: |
+      ha-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px;
+        }
+    styles:
+      name:
+        - padding: 8px .75em
+        - font-family: Roboto
+        - font-size: 20px
+      card:
+        - border-radius: 30px
+        - aspect-ratio: 1/1
+        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+        - background: 'rgba(255,255,255,.1)'
+    state:
+      - value: 'on'
+        spin: true
+        styles:
+          icon:
+            - color: 'rgb(1, 182, 253)'
+          name:
+            - font-weight: bold
+            - color: 'rgba(0,0,0,.6)'
+          card:
+            - background: 'rgba(255,255,255,.8)'
+            - border: 1px solid white
+            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+  light:
+    aspect_ratio: 1/1
+    styles:
+      name:
+        - padding: 8px 1em
+        - font-family: Roboto
+        - font-size: 20px
+      card:
+        - border-radius: 30px
+        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+        - background: 'rgba(255,255,255,.1)'
+    state:
+      - value: 'on'
+        styles:
+          card:
+            - background: 'rgba(255,255,255,.8)'
+            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+          name:
+            - font-weight: bold
+            - color: 'rgba(0,0,0,.6)'
+          state:
+            - color: 'rgba(0, 0, 0, 0.6)'
+          icon:
+            - color: var(--button-card-light-color)
+            - padding: 10px
+    extra_styles: |
+      ha-card:hover {
+        transform: scale(1.05);
+      }
+views:
+  - title: ''
+    path: home
+    visible:
+      - user: 344bb350d71d49dd8f8891a9a9261e75
+    theme: ''
+    layout:
+      min_cols: 3
+    type: 'custom:horizontal-layout'
+    icon: 'hass:home'
+    badges: []
+    cards:
+      - type: 'custom:mod-card'
+        style: |
+          ha-card {
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 30px;
+            background: var( --ha-card-background, var(--card-background-color, white) );
+
+          }
+        card:
+          type: vertical-stack
+          cards:
+            - type: grid
+              columns: 2
+              cards:
+                - type: 'custom:button-card'
+                  tap_action:
+                    action: none
+                  entity: sensor.timenew
+                  show_icon: false
+                  show_name: false
+                  show_state: true
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.1)'
+                      - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+                    state:
+                      - font-size: 40px
+                      - font-family: DM Sans
+                - type: 'custom:vertical-stack-in-card'
+                  style: |
+                    ha-card {
+                      text-align: center;
+                      text-transform: capitalize;
+                      background: rgba(255,255,255,.1);
+                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      font-family: DM Sans;
+                      background: rgba(255,255,255,.1);
+                      line-height: .125em;
+                      padding-top: 4px;
+                      }
+                  cards:
+                    - type: markdown
+                      style: |
+                        ha-card {
+                          background: none;
+                          padding: 0px;
+                          font-size: 30px;
+                          box-shadow: none;
+                        }
+                      content: '{{ states(''weather.kbgr_daynight'') }}'
+                    - type: markdown
+                      style: |
+                        ha-card {
+                          background: none;
+                          padding: 0px;
+                          font-size: 20px;
+                        }
+                      content: |-
+                        {{
+                          state_attr('weather.kbgr_daynight', 'temperature') }}°F
+              square: false
+            - type: vertical-stack
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.washer
+                      state: 'on'
+                  card:
+                    type: entities
+                    entities:
+                      - entity: sensor.washer_state
+                        name: Washer
+                        secondary_info:
+                          entity: sensor.washer_remaining_time
+                          prefix: 'Time Remaining: '
+                          postfix: ' minutes'
+                    style: |
+                      ha-card {
+                        background: rgba(255,255,255,.1);
+                        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      }
+                - type: conditional
+                  conditions:
+                    - entity: sensor.dryer
+                      state: 'on'
+                  card:
+                    type: entities
+                    entities:
+                      - entity: sensor.dryer_state
+                        name: Dryer
+                        secondary_info:
+                          entity: sensor.dryer_remaining_time
+                          prefix: 'Time Remaining: '
+                          postfix: ' minutes'
+                    style: |
+                      ha-card {
+                        background: rgba(255,255,255,.1);
+                        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      }
+                - type: conditional
+                  conditions:
+                    - entity: media_player.b_chromecast
+                      state: playing
+                  card:
+                    type: 'custom:mini-media-player'
+                    entity: media_player.boudoir_tv_2
+                    volume_stateless: true
+                    artwork: material
+                    source: icon
+                    style: |
+                      ha-card {
+                        background: rgba(255,255,255,.1);
+                      }
+            - type: grid
+              cards:
+                - type: entity
+                  entity: sensor.lumi_lumi_weather_temperature
+                  name: Boudoir
+                  style: |
+                    ha-card {
+                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      background: rgba(255,255,255,.1);
+                    }
+                - type: entity
+                  entity: sensor.philips_motion_sensor_temperature
+                  name: Kitchen
+                  style: |
+                    ha-card {
+                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      background: rgba(255,255,255,.1);
+                    }
+                - type: entity
+                  entity: sensor.lumi_lumi_weather_0a037c06_temperature
+                  name: Tank
+                  style: |
+                    ha-card {
+                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      background: rgba(255,255,255,.1);
+                    }
+              square: false
+            - type: 'custom:home-feed-card'
+              show_empty: false
+              more_info_on_tap: true
+              state_color: true
+              compact_mode: true
+              include_history: true
+              style: |
+                ha-card {
+                  background: rgba(255,255,255,.1);
+                  font-family: Roboto;
+                  margin-top: 5px;
+                  border-radius: 30px;
+                  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                  }
+              entities:
+                - entity: vacuum.rug_b
+                  content_template: |
+                    {{friendly_name}} {{state}}
+                - entity: lock.front_door
+                  content_template: |
+                    {{friendly_name}} {{state}}
+                - entity: lock.back_door
+                  content_template: |
+                    {{friendly_name}} {{state}}
+                - entity: alarm_control_panel.aarlo_base_station
+                  content_template: |
+                    {{friendly_name}} {{state}}
+                - entity: sensor.last_boot
+                  icon: 'hass:home-assistant'
+                  name: Last Restarted
+                - entity: group.kitchen
+                  name: Kitchen Lights
+                  content_template: |
+                    Kitchen Lights {{state}}
+      - type: vertical-stack
+        cards:
+          - type: entities
+            style: |
+              ha-card {
+                background: none;
+                box-shadow: none;
+                }
+            entities:
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  - entity: group.boudoir
+                    name: false
+                    icon: 'hass:sofa-single'
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        box-shadow: >
+                          {% if is_state('group.boudoir', 'on') %}
+
+                          0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px
+                          rgba(255,255,255,.5)
+
+                          {% else %}
+                            0px 8px 15px rgba(0, 0, 0, 0.2);
+                          {% endif %}
+                        border-radius: 50px
+                        padding: 20px
+                        color: |
+                          {% if is_state('group.boudoir', 'on') %}
+                            white
+                          {% else %}
+                            rgba(0,0,0,.5)
+                          {% endif %}
+                      icon:
+                        '--mdc-icon-size': 40px
+                    state_styles:
+                      '#p1':
+                        button:
+                          background: 'rgba(255,255,255,.5)'
+                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                    tap_action:
+                      action: navigate
+                      navigation_path: '#p1'
+                    hold_action:
+                      action: toggle
+                  - entity: group.bedroom
+                    name: false
+                    icon: 'hass:bed-king'
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        border-radius: 50px
+                        padding: 20px
+                        box-shadow: |
+                          {% if is_state('group.bedroom', 'on') %}
+                           0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
+                          {% else %}
+                            0px 8px 15px rgba(0, 0, 0, 0.2);
+                          {% endif %}
+                        color: |
+                          {% if is_state('group.bedroom', 'on') %}
+                            white
+                          {% else %}
+                            rgba(0,0,0,.5)
+                          {% endif %}
+                      icon:
+                        '--mdc-icon-size': 40px
+                    tap_action:
+                      action: navigate
+                      navigation_path: '#p2'
+                    hold_action:
+                      action: toggle
+                  - entity: group.office
+                    name: false
+                    icon: 'hass:laptop'
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        border-radius: 50px
+                        padding: 20px
+                        box-shadow: |
+                          {% if is_state('group.office', 'on') %}
+                            0px 8px 15px rgba(0, 0, 0, 0.2),inset 0 0 10px rgba(255,255,255,.5)
+                          {% else %}
+                            0px 8px 15px rgba(0, 0, 0, 0.2);
+                          {% endif %}
+                        color: |
+                          {% if is_state('group.office', 'on') %}
+                            white
+                          {% else %}
+                            rgba(0,0,0,.5)
+                          {% endif %}
+                      icon:
+                        '--mdc-icon-size': 40px
+                    tap_action:
+                      action: navigate
+                      navigation_path: '#p3'
+                    hold_action:
+                      action: toggle
+                  - entity: group.kitchen
+                    name: false
+                    icon: 'hass:stairs-down'
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        border-radius: 50px
+                        padding: 20px
+                        box-shadow: |
+                          {% if is_state('group.kitchen', 'on') %}
+                           0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
+                          {% else %}
+                            0px 8px 15px rgba(0, 0, 0, 0.2);
+                          {% endif %}
+                        color: |
+                          {% if is_state('group.kitchen', 'on') %}
+                            white
+                          {% else %}
+                            rgba(0,0,0,.5)
+                          {% endif %}
+                      icon:
+                        '--mdc-icon-size': 40px
+                    tap_action:
+                      action: navigate
+                      navigation_path: '#p4'
+                    hold_action:
+                      action: toggle
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  - name: Controls
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        border-radius: 30px
+                        font-size: 20px
+                        font-family: Assistant
+                        padding: 7px 30px
+                        box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+                    tap_action:
+                      action: navigate
+                      navigation_path: media
+                  - name: Sensors
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        border-radius: 30px
+                        font-size: 20px
+                        font-family: Assistant
+                        padding: 7px 30px
+                        box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+                    tap_action:
+                      action: navigate
+                      navigation_path: network
+          - type: 'custom:vertical-stack-in-card'
+            style: |
+              ha-card {
+                border-radius: 40px;
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                }
+            cards:
+              - type: 'custom:state-switch'
+                entity: hash
+                default: p1
+                transition: none
+                states:
+                  p1:
+                    type: 'custom:mod-card'
+                    style: |
+                      ha-card {
+                        background: none;
+                        padding: 10px;
+                        margin-top: none;
+                        }
+                    card:
+                      type: grid
+                      cards:
+                        - type: 'custom:button-card'
+                          entity: light.standing_lamp
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: light.desk_lamp
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: light.boudoir_ceiling_light
+                          name: Ceiling Light
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: switch.air_purifier
+                          hold_action:
+                            action: more-info
+                          template:
+                            - fan
+                        - type: 'custom:button-card'
+                          entity: light.nanoleaf
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: media_player.b_chromecast
+                          name: TV
+                          show_state: true
+                          icon: 'hass:television'
+                          template:
+                            - tv
+                      square: true
+                  p4:
+                    type: 'custom:mod-card'
+                    style: |
+                      ha-card {
+                        background: none;
+                        padding: 10px;
+                        margin-top: none;
+                        }
+                    card:
+                      type: grid
+                      square: true
+                      cards:
+                        - type: 'custom:button-card'
+                          entity: group.kitchen
+                          name: Kitchen
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          tap_action:
+                            action: more-info
+                          entity: vacuum.rug_b
+                          template:
+                            - vacuum
+                          show_state: true
+                        - type: 'custom:button-card'
+                          entity: group.livingroom
+                          name: Living Room
+                          icon: 'hass:lightbulb-multiple'
+                          template:
+                            - light
+                            - popup
+                  p2:
+                    type: 'custom:mod-card'
+                    style: |
+                      ha-card {
+                        background: none;
+                        padding: 10px;
+                        margin-top: none;
+                        }
+                    card:
+                      type: grid
+                      cards:
+                        - type: 'custom:button-card'
+                          entity: light.bedroom_floor_lamp
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: media_player.bedroom_tv
+                          template:
+                            - tv
+                          show_state: true
+                        - type: 'custom:button-card'
+                          entity: light.bedside_lamp
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: light.vine_lights
+                          template:
+                            - light
+                            - popup
+                        - type: 'custom:button-card'
+                          entity: switch.bedroom_air_purifier
+                          name: Air Purifier
+                          template:
+                            - fan
+                      square: true
+                  p3:
+                    type: 'custom:mod-card'
+                    style: |
+                      ha-card {
+                        background: none;
+                        padding: 10px;
+                        margin-top: none;
+                        }
+                    card:
+                      type: grid
+                      square: true
+                      cards:
+                        - type: 'custom:button-card'
+                          template:
+                            - light
+                            - popup
+                          entity: light.office_strip
+                          name: Light Strip
+                        - type: 'custom:button-card'
+                          template:
+                            - light
+                            - popup
+                          entity: light.office_desk_lamp_1
+                          name: Desk Lamp 1
+                        - type: 'custom:button-card'
+                          template:
+                            - light
+                            - popup
+                          entity: light.desk_lamp_2
+                          name: Desk Lamp 2
+                        - type: 'custom:button-card'
+                          tap_action:
+                            action: none
+                          template:
+                            - light
+                            - popup
+                          entity: switch.clem
+                          name: Clem's Lights
+                        - type: 'custom:button-card'
+                          tap_action:
+                            action: none
+                          template:
+                            - light
+                            - popup
+                          entity: switch.tank_heater
+                          name: Tank Heater
+          - type: 'custom:mod-card'
+            style: |
+              ha-card {
+                background: var( --ha-card-background, var(--card-background-color, white) );
+                padding: 7px;
+                border-radius: 25px;
+                margin: 0 auto;
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                }
+            card:
+              type: grid
+              cards:
+                - type: 'custom:button-card'
+                  entity: script.setmorningscene
+                  name: Morning
+                  icon_height: 40px
+                  show_state: false
+                  show_name: true
+                  tap_action:
+                    action: call-service
+                    service: scene.turn_on
+                    service_data:
+                      entity_id: scene.morning
+                      transition: 5
+                  template:
+                    - scene
+                - type: 'custom:button-card'
+                  entity: script.eveningscenecard
+                  name: Evening
+                  icon_height: 40px
+                  show_state: false
+                  tap_action:
+                    action: call-service
+                    service: scene.turn_on
+                    service_data:
+                      entity_id: scene.evening
+                      transition: 5
+                  template:
+                    - scene
+                - type: 'custom:button-card'
+                  entity: scene.in_bed
+                  lock:
+                    enabled: true
+                  name: In Bed
+                  icon_height: 40px
+                  show_state: false
+                  show_name: true
+                  tap_action:
+                    action: call-service
+                    service: scene.turn_on
+                    service_data:
+                      entity_id: scene.in_bed
+                      transition: 5
+                  template:
+                    - scene
+                - type: 'custom:button-card'
+                  entity: scene.vapor_wave
+                  name: Vapor Wave
+                  tap_action:
+                    action: call-service
+                    service: scene.turn_on
+                    service_data:
+                      entity_id: scene.vapor_wave
+                      transition: 5
+                  template:
+                    - scene
+                - type: 'custom:button-card'
+                  entity: scene.nebula
+                  name: Nebula
+                  tap_action:
+                    action: call-service
+                    service: scene.turn_on
+                    service_data:
+                      entity_id: scene.nebula
+                      transition: 5
+                  template:
+                    - scene
+                - type: 'custom:button-card'
+                  entity: script.movie_mode_actions
+                  name: Movie Mode
+                  tap_action:
+                    action: call-service
+                    service: toggle
+                  template:
+                    - scene
+              square: false
+      - type: 'custom:mod-card'
+        style: |
+          ha-card {
+            margin: 10px auto 0 auto;
+          }
+        card:
+          type: vertical-stack
+          cards:
+            - type: grid
+              style: |
+                ha-card {
+                  margin-top: 10px;
+                 }
+              columns: 2
+              square: false
+              cards:
+                - type: 'custom:button-card'
+                  style: |
+                    ha-card:hover {
+                      transform: scale(1.05);
+                      }
+                  tap_action:
+                    action: toggle
+                  entity: lock.front_door
+                  layout: icon_name_state2nd
+                  show_state: true
+                  styles:
+                    card:
+                      - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+                  state:
+                    - value: unlocked
+                      styles:
+                        icon:
+                          - color: orange
+                        card:
+                          - background: 'rgba(255,255,255,.3)'
+                          - border-radius: 30px
+                        state:
+                          - color: orange
+                          - animation: blink 2s infinite
+                - type: 'custom:button-card'
+                  style: |
+                    ha-card:hover {
+                      transform: scale(1.05);
+                      }
+                  tap_action:
+                    action: toggle
+                  entity: lock.back_door
+                  layout: icon_name_state2nd
+                  show_state: true
+                  styles:
+                    card:
+                      - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+                  state:
+                    - value: unlocked
+                      styles:
+                        card:
+                          - background: 'rgba(255,255,255,.1)'
+                          - border-radius: 30px
+                        state:
+                          - color: orange
+                          - animation: blink 2s infinite
+            - type: 'custom:mod-card'
+              style: |
+                ha-card {
+                  background: var( --ha-card-background, var(--card-background-color, white) );
+                  padding: 10px;
+                  border-radius: 30px;
+                }
+              card:
+                type: vertical-stack
+                cards:
+                  - type: entities
+                    entities:
+                      - entity: alarm_control_panel.aarlo_base_station
+                        icon: 'hass:cctv'
+                        secondary_info: last-changed
+                        name: Cameras
+                    style: |
+                      ha-card {
+                        background: rgba(255,255,255,.1);
+                        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                      }
+                    show_header_toggle: true
+                    state_color: true
+                  - type: 'custom:aarlo-glance'
+                    entities:
+                      - entity: camera.aarlo_front_door_cam
+                      - entity: camera.aarlo_driveway_cam
+                      - entity: camera.aarlo_side_cam
+                      - entity: camera.aarlo_porch_cam
+                    global: 'active,blended'
+                    image_view: direct
+                    image_top: 'name,status'
+                    image_bottom: 'motion,library,play,snapshot,battery'
+                    image_click: recordings
+                    library_sizes: '3,4,2'
+            - type: glance
+              entities:
+                - entity: camera.aarlo_porch_cam
+                - entity: camera.aarlo_front_door_cam
+                - entity: camera.aarlo_side_cam
+                - entity: camera.aarlo_driveway_cam
+              columns: 4
+  - title: Media
+    path: media
+    icon: 'hass:movie'
+    theme: ''
+    type: 'custom:horizontal-layout'
+    layout:
+      min_cols: 3
+    badges: []
+    cards:
+      - type: 'custom:vertical-stack-in-card'
+        style: |
+          ha-card {
+            background: var( --ha-card-background, var(--card-background-color, white) );;
+            font-family: DM Sans;
+            border-radius: 30px;
+            }
+        cards:
+          - type: entity
+            entity: media_player.sync_box
+            attribute: media_title
+            style: |
+              ha-card {
+                text-align: center;
+                background: none;
+                }
+          - type: entities
+            style: |
+              ha-card {
+                border-radius: 60px;
+                background: none;
+                box-shadow: none;
+                }
+            entities:
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  - entity: script.syncboxtogglemusicmode
+                    name: false
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.2)'
+                        border-radius: 25px
+                        padding: 20px
+                      icon:
+                        '--mdc-icon-size': 40px
+                  - entity: script.syncboxtogglevideomode
+                    name: false
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.2)'
+                        border-radius: 25px
+                        padding: 20px
+                      icon:
+                        '--mdc-icon-size': 40px
+                  - entity: script.syncboxtogglegamemode
+                    name: false
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.2)'
+                        border-radius: 25px
+                        padding: 20px
+                      icon:
+                        '--mdc-icon-size': 40px
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  - entity: script.syncboxdecrease
+                    name: false
+                    style:
+                      icon:
+                        '--mdc-icon-size': 40px
+                  - entity: script.syncboxtoggle
+                    name: false
+                    style:
+                      icon:
+                        '--mdc-icon-size': 40px
+                  - entity: script.syncboxintensityincrease
+                    name: false
+                    style:
+                      icon:
+                        '--mdc-icon-size': 40px
+          - type: entities
+            style: |
+              ha-card {
+                background: none;
+                }
+            entities:
+              - type: 'custom:slider-entity-row'
+                entity: media_player.sync_box
+                name: Brightness
+                icon: 'hass:brightness-5'
+      - type: vertical-stack
+        cards:
+          - type: 'custom:mod-card'
+            style: |
+              ha-card {
+                background: var( --ha-card-background, var(--card-background-color, white) );
+                padding: 10px;
+                border-radius: 30px;
+
+               }
+            card:
+              type: vertical-stack
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: picture-entity
+                      style: |
+                        ha-card:hover {
+                          box-shadow: 0 0 15px red;
+                          transform: scale(1.05);
+                          }
+                      entity: media_player.boudoir_samsung_tv
+                      image: local/banners/netflix.png
+                      tap_action:
+                        action: call-service
+                        service: media_player.select_source
+                        service_data:
+                          source: Netflix
+                          entity_id: media_player.b_chromecast
+                      show_name: false
+                      show_state: false
+                    - type: picture-entity
+                      entity: media_player.boudoir_samsung_tv
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 15px rgba(28,231,132,1);
+                          }
+                      image: local/banners/hulu.jpg
+                      tap_action:
+                        action: call-service
+                        service: media_player.select_source
+                        service_data:
+                          source: Hulu
+                          entity_id: media_player.b_chromecast
+                      show_name: false
+                      show_state: false
+                      aspect_ratio: 57%
+                - type: horizontal-stack
+                  cards:
+                    - type: picture-entity
+                      entity: media_player.boudoir_samsung_tv
+                      image: local/banners/hbonew.png
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 15px magenta;
+                          }
+                      tap_action:
+                        action: call-service
+                        service: media_player.select_source
+                        service_data:
+                          source: HBO
+                          entity_id: media_player.b_chromecast
+                      show_name: false
+                      show_state: false
+                    - type: picture-entity
+                      entity: media_player.boudoir_samsung_tv
+                      image: local/banners/spotify-logo.jpg
+                      tap_action:
+                        action: call-service
+                        service: media_player.select_source
+                        service_data:
+                          source: Spotify
+                          entity_id: media_player.b_chromecast
+                      show_name: false
+                      show_state: false
+                      style: |
+                        ha-card {
+                          border: none;
+                          background: rgb(25,20,20);
+                          }
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 15px rgb(27,215,95);
+          - type: entities
+            style: |
+              ha-card {
+                background: none;
+                box-shadow: none;
+                animation: fade-in-top 1s;
+                  }
+              @keyframes fade-in-top {
+                0%{
+                  -webkit-transform: translateY(-50px);
+                  transform: translateY(-50px);
+                  opacity: 0;
+                }
+                100%{
+                  -webkit-transform: translateY(0);
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+               }
+                }
+            entities:
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  - entity: group.boudoir
+                    name: false
+                    icon: 'hass:home'
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        box-shadow: >-
+                          0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px
+                          rgba(255,255,255,.5)
+                        border-radius: 50px
+                        padding: 20px
+                        color: white
+                      icon:
+                        '--mdc-icon-size': 40px
+                    tap_action:
+                      action: navigate
+                      navigation_path: home
+      - type: 'custom:mod-card'
+        style: |
+          ha-card {
+            background: var( --ha-card-background, var(--card-background-color, white) );;
+            padding: 10px;
+            border-radius: 30px;
+
+          }
+        card:
+          type: vertical-stack
+          cards:
+            - type: 'custom:state-switch'
+              entity: media_player.boudoir_samsung_tv
+              default: 'off'
+              states:
+                'on':
+                  type: media-control
+                  entity: media_player.boudoir_tv_2
+                  name: Boudoir TV
+                'off':
+                  type: markdown
+                  content: Boudoir TV Off
+                  style: |
+                    ha-card {
+                      font-size: 30px;
+                      text-align: center;
+                      font-family: Open Sans;
+                      box-shadow: 0px 0px 10px red;
+                      font-weight: bold;
+                      background: rgba(0,0,0,.6);
+                      }
+            - type: 'custom:tv-card'
+              style: |
+                ha-card {
+                  border-radius: 30px;
+                  background: none;
+                  box-shadow: none;
+                  margin: 5px;
+                  }
+              entity: media_player.b-chromecast
+              back:
+                service: androidtv.adb_command
+                service_data:
+                  command: BACK
+                  entity_id: media_player.b_chromecast
+              left:
+                service: androidtv.adb_command
+                service_data:
+                  command: LEFT
+                  entity_id: media_player.b_chromecast
+              right:
+                service: androidtv.adb_command
+                service_data:
+                  command: RIGHT
+                  entity_id: media_player.b_chromecast
+              up:
+                service: androidtv.adb_command
+                service_data:
+                  command: UP
+                  entity_id: media_player.b_chromecast
+              down:
+                service: androidtv.adb_command
+                service_data:
+                  command: DOWN
+                  entity_id: media_player.b_chromecast
+              select:
+                service: androidtv.adb_command
+                service_data:
+                  command: CENTER
+                  entity_id: media_player.b_chromecast
+              home:
+                service: androidtv.adb_command
+                service_data:
+                  command: HOME
+                  entity_id: media_player.b_chromecast
+              menu:
+                service: androidtv.adb_command
+                service_data:
+                  command: MENU
+                  entity_id: media_player.b_chromecast
+              volume_down:
+                service: media_player.play_media
+                service_data:
+                  media_content_type: send_key
+                  media_content_id: KEY_VOLDOWN
+                  entity_id: media_player.boudoir_samsung_tv
+              volume_up:
+                service: media_player.play_media
+                service_data:
+                  media_content_type: send_key
+                  media_content_id: KEY_VOLUP
+                  entity_id: media_player.boudoir_samsung_tv
+              volume_mute:
+                service: media_player.play_media
+                service_data:
+                  media_content_type: send_key
+                  media_content_id: KEY_MUTE
+                  entity_id: media_player.boudoir_samsung_tv
+  - title: Network
+    path: network
+    icon: 'hass:router-wireless'
+    theme: ''
+    type: 'custom:horizontal-layout'
+    layout:
+      min_cols: 4
+    badges: []
+    cards:
+      - type: 'custom:vertical-stack-in-card'
+        style: |
+          ha-card {
+            background: none;
+            }
+        cards:
+          - type: history-graph
+            entities:
+              - sun.sun
+            refresh_interval: 0
+            hours_to_show: 48
+          - type: history-graph
+            entities:
+              - entity: sensor.lumi_lumi_weather_temperature
+                name: Boudoir
+              - entity: sensor.philips_motion_sensor_temperature
+                name: Kitchen
+              - entity: sensor.lumi_lumi_weather_0a037c06_temperature
+                name: Clem's Tank
+            refresh_interval: 0
+            hours_to_show: 48
+            title: Global Temperatures
+          - type: history-graph
+            entities:
+              - entity: sensor.lumi_lumi_weather_humidity
+                name: Boudoir
+              - entity: sensor.lumi_lumi_weather_0a037c06_humidity
+                name: Clem's Tank
+            hours_to_show: 48
+            refresh_interval: 0
+            title: Global Humidity
+      - type: 'custom:vertical-stack-in-card'
+        style: |
+          ha-card {
+            background: none;
+          }
+        cards:
+          - type: 'custom:button-card'
+            name: Home Assistant
+            entity: sensor.last_boot
+            tap_action:
+              action: more-info
+            icon: 'hass:home-assistant'
+            show_state: false
+            show_last_changed: true
+            layout: icon_name_state2nd
+            styles:
+              state:
+                - padding: 15px
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.processor_use_percent
+                graph: line
+                detail: 2
+                hours_to_show: 48
+                name: CPU
+              - type: sensor
+                entity: sensor.memory_free
+                graph: line
+                hours_to_show: 48
+                detail: 2
+                name: Memory Free
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.disk_use_percent_home
+                graph: line
+                hours_to_show: 48
+                detail: 2
+                name: Disk
+              - type: sensor
+                entity: sensor.processor_temperature
+                graph: line
+                name: Temperature
+                icon: 'hass:thermometer'
+                hours_to_show: 48
+                detail: 2
+            show_name: true
+      - type: 'custom:vertical-stack-in-card'
+        style: |
+          ha-card {
+            background: none;
+          }
+        cards:
+          - type: 'custom:button-card'
+            tap_action:
+              action: more-info
+            entity: binary_sensor.pi_hole
+            icon: 'hass:pi-hole'
+            show_state: true
+            show_last_changed: true
+            layout: icon_name_state2nd
+            styles:
+              state:
+                - padding: 15px
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.pihole_cpu_usage
+                graph: line
+                detail: 2
+                hours_to_show: 48
+                name: CPU
+              - type: sensor
+                entity: sensor.pihole_memory_use
+                graph: line
+                hours_to_show: 48
+                detail: 2
+                name: Memory
+              - type: sensor
+                entity: sensor.pihole_disk_use_drive1
+                graph: line
+                hours_to_show: 48
+                detail: 2
+                name: Disk
+            square: false
+            columns: 2
+          - type: glance
+            entities:
+              - entity: sensor.pi_hole_ads_blocked_today
+                name: Blocked Today
+              - entity: sensor.pi_hole_dns_unique_clients
+                name: Conneced
+              - entity: sensor.pihole_temperature
+                name: Temperature
+            show_name: true
+      - type: vertical-stack
+        cards:
+          - type: 'custom:mod-card'
+            style: |
+              ha-card {
+                padding: 10px;
+                background: var( --ha-card-background, var(--card-background-color, white) );
+              }
+            card:
+              type: vertical-stack
+              cards:
+                - type: 'custom:button-card'
+                  tap_action:
+                    action: more-info
+                  entity: switch.clem
+                  icon: 'fas:dragon'
+                  layout: icon_name_state2nd
+                  show_state: true
+                  show_last_changed: true
+                  name: Clem's Tank
+                  styles:
+                    card:
+                      - background: none
+                      - box-shadow: none
+                - type: grid
+                  cards:
+                    - type: sensor
+                      entity: sensor.lumi_lumi_weather_0a037c06_temperature
+                      graph: line
+                      style: |
+                        ha-card {
+                          background: none;
+                          box-shadow: none;
+                          }
+                      name: Temp
+                    - type: sensor
+                      entity: sensor.lumi_lumi_weather_0a037c06_humidity
+                      graph: line
+                      name: Hum
+                      detail: 1
+                      style: |
+                        ha-card {
+                          background: none;
+                          box-shadow: none;
+                          }
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: switch.tank_heater
+                      icon: 'hass:radiator'
+                      show_state: true
+                      style: |
+                        ha-card {
+                          background: none;
+                          box-shadow: none;
+                          }
+                      lock:
+                        enabled: true
+                  square: true
+          - type: entities
+            style: |
+              ha-card {
+                background: none;
+                box-shadow: none;
+                animation: fade-in-top 1s;
+                  }
+              @keyframes fade-in-top {
+                0%{
+                  -webkit-transform: translateY(-50px);
+                  transform: translateY(-50px);
+                  opacity: 0;
+                }
+                100%{
+                  -webkit-transform: translateY(0);
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+               }
+                }
+            entities:
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  - entity: group.boudoir
+                    name: false
+                    icon: 'hass:home'
+                    style:
+                      button:
+                        background: 'rgba(255,255,255,.1)'
+                        box-shadow: >-
+                          0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px
+                          rgba(255,255,255,.5)
+                        border-radius: 50px
+                        padding: 20px
+                        color: white
+                      icon:
+                        '--mdc-icon-size': 40px
+                    tap_action:
+                      action: navigate
+                      navigation_path: home
+  - title: DEV2
+    path: dev2
+    theme: ''
+    icon: 'hass:wrench'
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: grid
+            columns: 2
+            cards:
+              - type: 'custom:button-card'
+                tap_action:
+                  action: none
+                entity: sensor.timenew
+                show_icon: false
+                show_name: false
+                show_state: true
+                styles:
+                  card:
+                    - background: 'rgba(255,255,255,.1)'
+                    - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+                  state:
+                    - font-size: 40px
+                    - font-family: DM Sans
+              - type: 'custom:vertical-stack-in-card'
+                style: |
+                  ha-card {
+                    text-align: center;
+                    text-transform: capitalize;
+                    background: rgba(255,255,255,.1);
+                    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                    font-family: DM Sans;
+                    background: rgba(255,255,255,.1);
+                    line-height: .25em;
+                    }
+                cards:
+                  - type: markdown
+                    style: |
+                      ha-card {
+                        background: none;
+                        padding: 0px;
+                        font-size: 30px;
+                      }
+                    content: '{{ states(''weather.kbgr_daynight'') }}'
+                  - type: markdown
+                    style: |
+                      ha-card {
+                        background: none;
+                        padding: 0px;
+                        font-size: 20px;
+                      }
+                    content: |-
+                      {{
+                        state_attr('weather.kbgr_daynight', 'temperature') }}°F
+            square: false
+          - type: vertical-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: sensor.washer
+                    state: 'on'
+                card:
+                  type: entities
+                  entities:
+                    - entity: sensor.washer_state
+                      name: Washer
+                      secondary_info:
+                        entity: sensor.washer_remaining_time
+                        prefix: 'Time Remaining: '
+                        postfix: ' minutes'
+                  style: |
+                    ha-card {
+                      background: rgba(255,255,255,.1);
+                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                    }
+              - type: conditional
+                conditions:
+                  - entity: sensor.dryer
+                    state: 'on'
+                card:
+                  type: entities
+                  entities:
+                    - entity: sensor.dryer_state
+                      name: Dryer
+                      secondary_info:
+                        entity: sensor.dryer_remaining_time
+                        prefix: 'Time Remaining: '
+                        postfix: ' minutes'
+                  style: |
+                    ha-card {
+                      background: rgba(255,255,255,.1);
+                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                    }
+              - type: conditional
+                conditions:
+                  - entity: media_player.b_chromecast
+                    state: playing
+                card:
+                  type: 'custom:mini-media-player'
+                  entity: media_player.boudoir_tv_2
+                  volume_stateless: true
+                  artwork: full-cover
+                  source: icon
+                  style: |
+                    ha-card {
+                      background: rgba(255,255,255,.1);
+                    }
+          - type: grid
+            cards:
+              - type: entity
+                entity: sensor.lumi_lumi_weather_temperature
+                name: Boudoir
+                style: |
+                  ha-card {
+                    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                    background: rgba(255,255,255,.1);
+                  }
+              - type: entity
+                entity: sensor.philips_motion_sensor_temperature
+                name: Kitchen
+                style: |
+                  ha-card {
+                    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                    background: rgba(255,255,255,.1);
+                  }
+              - type: entity
+                entity: sensor.lumi_lumi_weather_0a037c06_temperature
+                name: Tank
+                style: |
+                  ha-card {
+                    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                    background: rgba(255,255,255,.1);
+                  }
+            square: false
+          - type: 'custom:home-feed-card'
+            show_empty: false
+            more_info_on_tap: true
+            state_color: true
+            compact_mode: true
+            include_history: true
+            style: |
+              ha-card {
+                background: rgba(255,255,255,.1);
+                font-family: Roboto;
+                margin-top: 5px;
+                border-radius: 30px;
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+                }
+            entities:
+              - entity: vacuum.rug_b
+                content_template: |
+                  {{friendly_name}} {{state}}
+              - entity: lock.front_door
+                content_template: |
+                  {{friendly_name}} {{state}}
+              - entity: lock.back_door
+                content_template: |
+                  {{friendly_name}} {{state}}
+              - entity: alarm_control_panel.aarlo_base_station
+                content_template: |
+                  {{friendly_name}} {{state}}
+              - entity: sensor.last_boot
+                icon: 'hass:home-assistant'
+                name: Last Restarted
+              - entity: group.kitchen
+                name: Kitchen Lights
+                content_template: |
+                  Kitchen Lights {{state}}
