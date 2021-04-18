@@ -14,3 +14,5 @@
 
 ### Light Mode  
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/light.PNG "Light Variant")
+### Dark Mode  
+![alt text](https://github.com/crixle/homeassistant-config/blob/main/dark.PNG "Dark Variant")
