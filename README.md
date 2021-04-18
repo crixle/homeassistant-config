@@ -27,6 +27,7 @@
 | Browser Mod | [link](https://github.com/thomasloven/hass-browser_mod) |
 | State-Switch | [link](https://github.com/thomasloven/lovelace-state-switch) |
 | Home Feed Card | [link](https://github.com/gadgetchnnel/lovelace-home-feed-card) |
+| Mini Media Player | [link](https://github.com/kalkih/mini-media-player) |
 
 ### Light Mode  
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/light.PNG "Light Variant")
