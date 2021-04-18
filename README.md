@@ -1,7 +1,7 @@
 # Crixle's HA Setup
-* Running the latest version of HA Supervised
-* Host is a Raspberry Pi 4B 4GB with a Samsung 500GB SSD via USB
-* Layout is mostly custom button cards in grids with CSS styling
+### Hardware
+ - Raspberry Pi 4B 4GB
+ - Samsung 500GB SSD via USB
 # HACS Addons
 | Card | Link |
 | :--- | ---- |
