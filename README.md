@@ -49,3 +49,6 @@ Using the Aarlo HACS integration and swipe-card.
 ### Feed
 The feed is used for regularly changing events and quick referencing. Our washer and dryer pop up when they're active to show how much time is left. Our TV will pop up when it's on for quick volume and source controls. Created by creating a vertical stack card with many conditional cards.
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/feed.jpg "Feed Card")
+### Light Popup
+The native light control is pretty trash for touch screens, so I implemented a light-popup card for each light. The settings and styling for it are defined in the button layout for lights in lovelace-ui.
+![alt text](https://github.com/crixle/homeassistant-config/blob/main/lightpopup.gif "Light Popup Card")
