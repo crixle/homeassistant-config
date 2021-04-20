@@ -29,7 +29,9 @@
 | State-Switch | [link](https://github.com/thomasloven/lovelace-state-switch) |
 | Home Feed Card | [link](https://github.com/gadgetchnnel/lovelace-home-feed-card) |
 | Mini Media Player | [link](https://github.com/kalkih/mini-media-player) |
-| Theme | [link](https://github.com/basnijholt/lovelace-ios-themes)
+| Aarlo | [link](https://github.com/twrecked/lovelace-hass-aarlo) |
+| Swipe Card | [link](https://github.com/bramkragten/swipe-card) |
+| Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
 
 ### Light Mode  
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/light.jpg "Light Variant")
@@ -38,3 +40,7 @@
 ### Light Control
 Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/lights.gif "Light Controls GIF")
+### Cameras
+The default view of the card is a snippet of whatever motion my cameras recorded last. Swiping to the left reveals all cameras to view individual recordings and live feeds.
+Using the Aarlo HACS integration and swipe-card.
+![alt text](https://github.com/crixle/homeassistant-config/blob/main/cameras.gif "Camera Card")
