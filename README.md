@@ -16,6 +16,7 @@
  -  Amazon HD Fire 10 (2019) for wall mounted tablet, running [FullyKiosk](https://www.fully-kiosk.com/)
  -  Aqara Motion/Humidity/Temperature Sensors (Controlled without Aqara hub, instead using the HUSBZB adapter
  -  Philips Motion Sensor with ambient temperature
+ -  [JHome Zigbee Smart Plugs](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 # HACS Addons
 | Card | Link |
 | :--- | ---- |
