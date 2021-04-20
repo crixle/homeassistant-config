@@ -36,5 +36,5 @@
 ### Dark Mode  
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/darkmode.PNG "Dark Variant")
 ### Light Control
-Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down on the globe will toggle them.
+Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/lights.gif "Light Controls GIF")
