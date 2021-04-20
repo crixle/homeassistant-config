@@ -16,6 +16,8 @@
  -  Amazon HD Fire 10 (2019) for wall mounted tablet, running [FullyKiosk](https://www.fully-kiosk.com/)
  -  Aqara Motion/Humidity/Temperature Sensors (Controlled without Aqara hub, instead using the HUSBZB adapter
  -  Philips Motion Sensor with ambient temperature
+ -  Phillips Sync Box
+ -  Phillips 55" Gradient Strip
  -  [JHome Zigbee Smart Plugs](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 # HACS Addons
 | Card | Link |
@@ -44,3 +46,6 @@ Control multiple lights and devices per room all while in one card! If the globe
 The default view of the card is a snippet of whatever motion my cameras recorded last. Swiping to the left reveals all cameras to view individual recordings and live feeds.
 Using the Aarlo HACS integration and swipe-card.
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/cameras.gif "Camera Card")
+### Feed
+The feed is used for regularly changing events and quick referencing. Our washer and dryer pop up when they're active to show how much time is left. Our TV will pop up when it's on for quick volume and source controls. Created by creating a vertical stack card with many conditional cards.
+![alt text](https://github.com/crixle/homeassistant-config/blob/main/feed.jpg "Feed Card")
