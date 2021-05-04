@@ -2,7 +2,7 @@
 default_config:
 tts:
   - platform: voicerss
-    api_key: 6cb2e173ab16465ea656d538c3547fd8
+    api_key: [REDACTED]
 
 automation: !include automations.yaml
 script: !include scripts.yaml
