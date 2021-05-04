@@ -34,6 +34,7 @@
 | Aarlo | [link](https://github.com/twrecked/lovelace-hass-aarlo) |
 | Swipe Card | [link](https://github.com/bramkragten/swipe-card) |
 | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
+| Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) |
 
 ### Light Mode  
 ![alt text](https://github.com/crixle/homeassistant-config/blob/main/light.jpg "Light Variant")
