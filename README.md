@@ -68,7 +68,10 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
   <summary>Light Control Card</summary>
   
   Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down    on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
+ 
   ![lightscontrol](https://user-images.githubusercontent.com/54859942/120507947-429c1200-c395-11eb-9083-74914762acf7.gif)
+  ![lightpopup](https://github.com/crixle/homeassistant-config/blob/main/lightpopup.gif)
+ 
   ```
     type: vertical-stack
     cards:
