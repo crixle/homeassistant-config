@@ -37,6 +37,13 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 </details>
 
 <details>
+  <summary>Theme</summary>
+  
+  You may have not recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
+
+</details>
+
+<details>
   <summary>Dark Mode</summary>
   
   ![Dark](https://user-images.githubusercontent.com/54859942/120360001-4b79de80-c2d6-11eb-8e83-73c75f24caa5.PNG)
