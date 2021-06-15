@@ -61,6 +61,7 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
   | CSS Card Mod | [link](https://github.com/thomasloven/lovelace-card-mod) |
   | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
   | Light Popup Card | [link](https://github.com/DBuit/light-popup-card) |
+  | Auto Entities | [link](https://github.com/thomasloven/lovelace-auto-entities) |
   | Browser Mod | [link](https://github.com/thomasloven/hass-browser_mod) |
   | State-Switch | [link](https://github.com/thomasloven/lovelace-state-switch) |
   | Home Feed Card | [link](https://github.com/gadgetchnnel/lovelace-home-feed-card) |
