@@ -2,6 +2,9 @@
 I've always loved HomeKit, but it lacks functionality and integration with many of my devices so I created this dashboard to give off iOS vibes but gives me the versatility my smart home needs. </br>
 </br>
 **NOTE: All cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
+
+![demo](https://user-images.githubusercontent.com/54859942/120359753-0d7cba80-c2d6-11eb-9c72-adbf6a378297.gif)
+
 ### Features
 - Auto updating feed card (far left)
 - Light control center that switches between rooms
@@ -23,11 +26,6 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
  -  Phillips Sync Box
  -  Phillips 55" Gradient Strip
  -  [JHome Zigbee Smart Plugs](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-<details>
-  <summary>Demo</summary>
-  
-  ![demo](https://user-images.githubusercontent.com/54859942/120359753-0d7cba80-c2d6-11eb-9c72-adbf6a378297.gif)
-</details>
 
 <details>
   <summary>Light Mode</summary>
