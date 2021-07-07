@@ -18,13 +18,13 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
  - Raspberry Pi 4B 4GB
  - [Samsung 500GB SSD via USB](https://www.bestbuy.com/site/samsung-t7-500gb-external-usb-3-2-gen-2-portable-solid-state-drive-with-hardware-encryption-indigo-blue/6408298.p?skuId=6408298)
  -  [HUSBZB Usb Hub (Zigbee & Z-Wave)](https://www.amazon.com/gp/product/B01GJ826F8/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
- -  Phillips Hue A19 Bulbs + Hub
+ -  Philips Hue A19 Bulbs + Hub
  -  [These cheap Zigbee bulbs that work surprisingly well](https://www.homedepot.com/p/EcoSmart-60-Watt-Equivalent-A19-Dimmable-SMART-LED-Light-Bulb-Tunable-White-2-Pack-A9A19A60WESDZ02/309683612)
  -  Amazon HD Fire 10 (2019) for wall mounted tablet, running [FullyKiosk](https://www.fully-kiosk.com/)
  -  Aqara Motion/Humidity/Temperature Sensors (Controlled with HUSBZB adapter, not Aqara hub)
  -  2x Philips Motion Sensor with ambient temperature
- -  Phillips Sync Box
- -  Phillips 55" Gradient Strip
+ -  Philips Sync Box
+ -  Philips 55" Gradient Strip
  -  [JHome Zigbee Smart Plugs](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 
 <details>
