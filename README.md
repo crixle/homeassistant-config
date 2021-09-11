@@ -50,6 +50,7 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
   | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
   | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) |
   | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
+  | Kiosk Mode | [link](https://github.com/maykar/kiosk-mode)
  
 </details>
 <details>
