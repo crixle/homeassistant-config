@@ -1,8 +1,107 @@
-  text_only:
+button_card_templates:
+  roomba:
+    type: custom:button-card
+    template:
+      - grid_card
+    tap_action:
+      action: more-info
+    state:
+      - value: cleaning
+        styles:
+          state:
+            - color: green
+            - animation: blink 2s ease infinite
+          icon:
+            - color: green
+            - animation: vibrate-slow 1s ease infinite
+    extra_styles: |
+      @keyframes vibrate-slow {
+        0%{
+          -webkit-transform: translate(0);
+          transform: translate(0);
+        }
+        20%{
+          -webkit-transform: translate(2px,-2px);
+          transform: translate(2px,-2px);
+        }
+        40%{
+          -webkit-transform: translate(2px,2px);
+          transform: translate(2px,2px);
+        }
+        60%{
+          -webkit-transform: translate(-2px,2px);
+          transform: translate(-2px,2px);
+        }
+        80%{
+          -webkit-transform: translate(-2px,-2px);
+          transform: translate(-2px,-2px);
+        }
+        100%{
+          -webkit-transform: translate(0);
+          transform: translate(0);
+        }
+  camera_button:
+    show_state: true
+    layout: icon_name_state2nd
+    tap_action:
+      action: toggle
     styles:
       card:
-        - background: none
-        - box-shadow: none
+        - border-radius: 10px
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+      icon:
+        - color: green
+    state:
+      - value: 'off'
+        styles:
+          card:
+            - filter: opacity(50%)
+          icon:
+            - filter: grayscale(100%)
+    confirmation:
+      text: Are you sure?
+  grid_card:
+    show_state: true
+    aspect_ratio: 1/1
+    tap_action:
+      haptic: light
+      action: toggle
+    styles:
+      card:
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+      grid:
+        - grid-template-areas: |
+            " i . " " n n " " s l "
+      img_cell:
+        - align-self: start
+        - text-align: start
+        - display: inline-block
+        - padding-left: 10px
+      name:
+        - justify-self: start
+        - padding-left: 10px
+        - font-weight: bold
+      state:
+        - justify-self: start
+        - padding-left: 10px
+    state:
+      - value: 'off'
+        styles:
+          card:
+            - filter: opacity(50%)
+          icon:
+            - filter: grayscale(100%)
+  light:
+    template: popup
+    state:
+      - value: 'on'
+        styles:
+          icon:
+            - color: var(--button-card-light-color)
   footer_card:
     tap_action:
       action: toggle
@@ -16,10 +115,15 @@
         - color: '#2ECCFA'
         - height: 40px
       card:
-        - box-shadow: '0 8px 15px rgba(0,0,0,.2)'
+        - box-shadow: 0 8px 15px rgba(0,0,0,.2)
         - font-family: Assistant
-        - font-size: 18px
+        - font-size: 20px
   spin_animation:
+    state:
+      - value: 'on'
+        styles:
+          icon:
+            - animation: spin 1s ease linear
     extra_styles: |
       @keyframes spin {
         0% {
@@ -60,7 +164,7 @@
       card:
         - '--mdc-ripple-color': green
         - border-radius: 20px
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+        - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
     state:
       - value: unlocked
         styles:
@@ -79,46 +183,35 @@
         - height: 4em
         - width: 4em
         - margin: 4px
-  scene2:
-    type: 'custom:button-card'
-    tap_action:
-      action: call-service
-      service: scene.turn_on
-      service_data:
-        entity_id: |
-          [[[ return entity.entity_id ]]]
-        transition: 5
   popup:
     hold_action:
       action: fire-dom-event
       browser_mod:
         command: popup
-        hide_header: true
         title: |
-          [[[ return entity.attributes.friendly_name ]]]
+          [[[ return entity.attributes.friendly_name; ]]]
         card:
           type: entities
           entities:
-            - type: 'custom:light-popup-card'
+            - type: custom:light-popup-card
               entity: |
                 [[[ return entity.entity_id ]]]
               icon: none
               fullscreen: false
               brightnessWidth: 130px
               brightnessHeight: 360px
-              borderRadius: 30px
+              borderRadius: 2em
               sliderColoredByLight: true
-              sliderTrackColor: 'rgba(25, 25, 25, 0.9)'
-            - type: 'custom:hui-element'
-              card_type: horizontal-stack
-              card_mod:
-                style: |
-                  #root {
-                    justify-content: center;
-                    margin-top: 2em;
-                  }
+              sliderTrackColor: rgba(25, 25, 25, 0.9)
+              displayType: slider
+            - type: custom:hui-horizontal-stack-card
+              style: |
+                #root {
+                  justify-content: center;
+                  margin-top: 2em;
+                }
               cards:
-                - type: 'custom:button-card'
+                - type: custom:button-card
                   styles:
                     card:
                       - background: '#d8d9e1'
@@ -130,7 +223,7 @@
                         [[[ return entity.entity_id ]]]
                       color_temp: 153
                   template: color_light
-                - type: 'custom:button-card'
+                - type: custom:button-card
                   styles:
                     card:
                       - background: '#d5b08d'
@@ -142,16 +235,14 @@
                         [[[ return entity.entity_id ]]]
                       color_temp: 326
                   template: color_light
-            - type: 'custom:hui-element'
-              card_type: horizontal-stack
-              card_mod:
-                style: |
-                  #root {
-                    justify-content: center;
-                    margin-bottom: 1em;
-                  }
+            - type: custom:hui-horizontal-stack-card
+              style: |
+                #root {
+                  justify-content: center;
+                  margin-bottom: 1em;
+                }
               cards:
-                - type: 'custom:button-card'
+                - type: custom:button-card
                   styles:
                     card:
                       - background: '#ce944b'
@@ -163,7 +254,7 @@
                         [[[ return entity.entity_id ]]]
                       color_temp: 500
                   template: color_light
-                - type: 'custom:button-card'
+                - type: custom:button-card
                   styles:
                     card:
                       - background: >-
@@ -181,7 +272,7 @@
                       title: |
                         [[[ return entity.attributes.friendly_name ]]]
                       card:
-                        type: 'custom:light-entity-card'
+                        type: custom:light-entity-card
                         entity: |
                           [[[ return entity.entity_id ]]]
                         brightness: true
@@ -191,30 +282,50 @@
                         show_slider_percent: true
                         smooth_color_wheel: true
                         persist_features: true
-                        consolidate_entities: true
+                        consolidate_entities: false
                   template: color_light
+  bar_button:
+    layout: icon_name
+    styles:
+      icon:
+        - width: 40px
+      name:
+        - font-size: 20px
+      card:
+        - border-radius: 15px
+        - font-family: DM Sans
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+        - font-weight: bold
+        - margin: 0px
   scene:
     layout: icon_name
+    styles:
+      icon:
+        - width: 40px
+      name:
+        - font-size: 20px
+      card:
+        - border-radius: 15px
+        - font-family: DM Sans
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+        - font-weight: bold
+        - margin: 0px
     tap_action:
       action: call-service
       service: scene.turn_on
       service_data:
         entity_id: |
           [[[ return entity.entity_id ]]]
-        transition: 5
-    styles:
-      icon:
-        - height: 40px
-      name:
-        - font-family: Assistant
-      card:
-        - background: 'rgba(255,255,255,.1)'
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
+        transition: 3
+    hold_action:
+      action: more-info
     extra_styles: |
       ha-card:hover {
         transform: scale(1.05);
-        box-shadow: 0 0 10px yellow;
-        background: white;
         }
   vacuum:
     aspect_ratio: 1/1
@@ -229,138 +340,70 @@
         - border-radius: 30px
         - font-family: DM Sans
         - aspect-ratio: 1/1
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
-        - background: 'rgba(255,255,255,.1'
+        - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
+        - background: rgba(255,255,255,.1
     state:
       - value: cleaning
         styles:
           card:
-            - background: 'rgba(255,255,255,.8)'
+            - background: rgba(255,255,255,.8)
             - border: 1px solid white
-            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+            - box-shadow: 0 0 10px white, inset 0 0 5px white
           state:
             - animation: blink 2s ease infinite
-            - color: 'rgb(100,100,255)'
+            - color: rgb(100,100,255)
           icon:
-            - color: 'rgb(100,100,255)'
+            - color: rgb(100,100,255)
   tv:
     aspect_ratio: 1/1
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 10px;
-        }
-    styles:
-      state:
-        - font-size: 20px
-      card:
-        - border-radius: 30px
-        - aspect-ratio: 1/1
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
-        - background: 'rgba(255,255,255,.1'
     state:
       - value: playing
         styles:
-          card:
-            - background: 'rgba(255,255,255,.8)'
-            - border: 1px solid white
-            - box-shadow: '0 0 10px white, inset 0 0 5px white'
           state:
             - animation: blink 2s ease infinite
-            - color: 'rgb(100,100,255)'
+            - color: rgb(100,100,255)
           icon:
-            - color: 'rgb(100,100,255)'
-          name:
-            - font-weight: bold
-            - color: 'rgba(0,0,0,.6)'
-  fan:
-    aspect_ratio: 1/1
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 10px;
-        }
-    styles:
-      name:
-        - font-family: Assistant
-        - padding: 8px .75em
-        - font-size: 20px
-      card:
-        - border-radius: 30px
-        - aspect-ratio: 1/1
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
-        - background: 'rgba(255,255,255,.1)'
+            - color: rgb(100,100,255)
+  ac:
     state:
-      - value: 'on'
-        spin: true
+      - value: cool
         styles:
           icon:
-            - color: 'rgb(1, 182, 253)'
-          name:
-            - font-weight: bold
-            - color: 'rgba(0,0,0,.6)'
-          card:
-            - background: 'rgba(255,255,255,.8)'
-            - border: 1px solid white
-            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+            - color: rgb(1, 182, 253)
   light-alt:
-    aspect_ratio: 1/1
-    styles:
-      name:
-        - padding: 8px 1em
-        - font-family: Roboto
-        - font-size: 20px
-      card:
-        - border-radius: 30px
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
-        - background: 'rgba(255,255,255,.1)'
     state:
       - value: 'on'
         styles:
-          card:
-            - background: 'rgba(255,255,255,.8)'
-            - box-shadow: >-
-                0 0 10px var(--button-card-light-color), inset 0 0 5px
-                var(--button-card-light-color)
-          name:
-            - font-weight: bold
-            - color: 'rgba(0,0,0,.6)'
-          state:
-            - color: 'rgba(0, 0, 0, 0.6)'
           icon:
-            - padding: 10px
             - color: var(--accent-color)
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-      }
-  light:
+  light-temp:
+    tap_action:
+      haptic: light
+      action: toggle
     aspect_ratio: 1/1
     styles:
       name:
-        - font-family: Assistant
         - padding: 8px 1em
         - font-size: 20px
       card:
         - border-radius: 30px
-        - box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
-        - background: 'rgba(255,255,255,.1)'
+        - box-shadow: none
+        - background: rgba(255,255,255,.1)
       icon:
         - color: var(--button-card-light-color)
     state:
       - value: 'on'
         styles:
           card:
-            - background: 'rgba(255,255,255,.8)'
-            - box-shadow: '0 0 10px white, inset 0 0 5px white'
+            - background: rgba(255,255,255,.8)
             - box-shadow: >-
-                0 0 10px var(--button-card-light-color), inset 0 0 5px
+                0 0 15px var(--button-card-light-color), inset 0 0 60px
                 var(--button-card-light-color)
           name:
+            - mix-blend-mode: difference
             - font-weight: bold
-            - color: 'rgba(0,0,0,.6)'
           state:
-            - color: 'rgba(0, 0, 0, 0.6)'
+            - color: rgba(0, 0, 0, 0.6)
           icon:
             - padding: 10px
     extra_styles: |
