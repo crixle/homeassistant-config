@@ -1,18 +1,18 @@
-# Crixle's HA Setup
+# Crixle's Dashboard
 I've always loved HomeKit, but it lacks functionality and integration with many of my devices so I created this dashboard to give off iOS vibes but gives me the versatility my smart home needs. </br>
 </br>
 **NOTE: All cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
 
-![demo](https://user-images.githubusercontent.com/54859942/120359753-0d7cba80-c2d6-11eb-9c72-adbf6a378297.gif)
+![HA-Banner](https://user-images.githubusercontent.com/54859942/132930175-cf1af00c-8d36-4426-8032-c4fce5668be1.png)
+
 
 ### Features
-- Auto updating feed card (far left)
+- Adaptive layout thanks to [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
 - Light control center that switches between rooms
 - Interactive dynamic floor plan
 - Arlo Pro 3 camera control/library access
 - Automatic light/dark mode
 - Media & Sync Box Control
-- Hover effects for desktop view
 - Automatic light/dark mode based on sun
 ### Hardware
  - Raspberry Pi 4B 4GB
@@ -20,33 +20,13 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
  -  [HUSBZB Usb Hub (Zigbee & Z-Wave)](https://www.amazon.com/gp/product/B01GJ826F8/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
  -  Philips Hue A19 Bulbs + Hub
  -  [These cheap Zigbee bulbs that work surprisingly well](https://www.homedepot.com/p/EcoSmart-60-Watt-Equivalent-A19-Dimmable-SMART-LED-Light-Bulb-Tunable-White-2-Pack-A9A19A60WESDZ02/309683612)
- -  Amazon HD Fire 10 (2019) for wall mounted tablet, running [FullyKiosk](https://www.fully-kiosk.com/)
+ -  Amazon HD Fire 10 (2019) for wall mounted tablet, running [WallPanel](https://play.google.com/store/apps/details?id=com.thanksmister.iot.wallpanel&hl=en_US&gl=US)
  -  Aqara Motion/Humidity/Temperature Sensors (Controlled with HUSBZB adapter, not Aqara hub)
  -  2x Philips Motion Sensor with ambient temperature
  -  Philips Sync Box
  -  Philips 55" Gradient Strip
  -  [JHome Zigbee Smart Plugs](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 
-<details>
-  <summary>Light Mode</summary>
-  
-  ![Light](https://user-images.githubusercontent.com/54859942/120359952-3d2bc280-c2d6-11eb-80d7-c865913088c1.PNG)
-
-</details>
-
-<details>
-  <summary>Theme</summary>
-  
-  You may have not recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
-
-</details>
-
-<details>
-  <summary>Dark Mode</summary>
-  
-  ![Dark](https://user-images.githubusercontent.com/54859942/120360001-4b79de80-c2d6-11eb-8e83-73c75f24caa5.PNG)
-
-</details>
 
 <details>
   <summary>HACS Addons</summary>
@@ -68,724 +48,497 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
   | Swipe Card | [link](https://github.com/bramkragten/swipe-card) |
   | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
   | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) |
+  | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
+ 
 </details>
+<details>
+  <summary>Light Mode</summary>
+  
+  ![LightDash](https://user-images.githubusercontent.com/54859942/132930222-52fafde5-5684-4f32-8028-9db8475146c5.png)
+
+
+</details>
+
+
+<details>
+  <summary>Dark Mode</summary>
+  
+  ![DarkDash](https://user-images.githubusercontent.com/54859942/132930231-127aca01-695a-44e3-8608-d935f75408b8.png)
+
+
+</details>
+
+<details>
+  <summary>Theme</summary>
+  
+  You probably recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
+
+</details>
+
 
 <details>
   <summary>Light Control Card</summary>
   
-  Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down    on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
+  Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
  
-  ![lightscontrol](https://user-images.githubusercontent.com/54859942/120507947-429c1200-c395-11eb-9083-74914762acf7.gif)
+  ![Lights](https://user-images.githubusercontent.com/54859942/132930244-e507add3-2313-4adf-bafd-ea6ed2581dff.gif)
+
   ![lightpopup](https://github.com/crixle/homeassistant-config/blob/main/lightpopup.gif)
  
   ```
-    type: vertical-stack
-    cards:
-      - type: entities
-        style: |
-          ha-card {
-            background: none;
-            box-shadow: none;
-            }
-        entities:
-          - type: 'custom:paper-buttons-row'
-            buttons:
-              - entity: group.boudoir
-                name: false
-                icon: 'hass:sofa-single'
-                style:
-                  button:
-                    background: 'rgba(255,255,255,.1)'
-                    box-shadow: >
-                      {% if is_state('group.boudoir', 'on') %}
-    
-                      0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px
-                      rgba(255,255,255,.5)
-    
-                      {% else %}
-                        0px 8px 15px rgba(0, 0, 0, 0.2);
-                      {% endif %}
-                    border-radius: 50px
-                    padding: 20px
-                    color: |
-                      {% if is_state('group.boudoir', 'on') %}
-                        white
-                      {% else %}
-                        rgba(0,0,0,.5)
-                      {% endif %}
-                  icon:
-                    '--mdc-icon-size': 40px
-                state_styles:
-                  '#boudoir':
-                    button:
-                      background: 'rgba(255,255,255,.5)'
-                      box-shadow: '0 0 15px rgba(255,255,255,.6)'
-                tap_action:
-                  action: navigate
-                  navigation_path: '#boudoir'
-                hold_action:
-                  action: toggle
-              - entity: group.bedroom
-                name: false
-                icon: 'hass:bed-king'
-                style:
-                  button:
-                    background: 'rgba(255,255,255,.1)'
-                    border-radius: 50px
-                    padding: 20px
-                    box-shadow: |
-                      {% if is_state('group.bedroom', 'on') %}
-                       0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
-                      {% else %}
-                        0px 8px 15px rgba(0, 0, 0, 0.2);
-                      {% endif %}
-                    color: |
-                      {% if is_state('group.bedroom', 'on') %}
-                        white
-                      {% else %}
-                        rgba(0,0,0,.5)
-                      {% endif %}
-                  icon:
-                    '--mdc-icon-size': 40px
-                tap_action:
-                  action: navigate
-                  navigation_path: '#bedroom'
-                hold_action:
-                  action: toggle
-              - entity: group.office
-                name: false
-                icon: 'hass:laptop'
-                style:
-                  button:
-                    background: 'rgba(255,255,255,.1)'
-                    border-radius: 50px
-                    padding: 20px
-                    box-shadow: |
-                      {% if is_state('group.office', 'on') %}
-                        0px 8px 15px rgba(0, 0, 0, 0.2),inset 0 0 10px rgba(255,255,255,.5)
-                      {% else %}
-                        0px 8px 15px rgba(0, 0, 0, 0.2);
-                      {% endif %}
-                    color: |
-                      {% if is_state('group.office', 'on') %}
-                        white
-                      {% else %}
-                        rgba(0,0,0,.5)
-                      {% endif %}
-                  icon:
-                    '--mdc-icon-size': 40px
-                tap_action:
-                  action: navigate
-                  navigation_path: '#office'
-                hold_action:
-                  action: toggle
-              - entity: group.kitchen
-                name: false
-                icon: 'hass:stairs-down'
-                style:
-                  button:
-                    background: 'rgba(255,255,255,.1)'
-                    border-radius: 50px
-                    padding: 20px
-                    box-shadow: |
-                      {% if is_state('group.kitchen', 'on') %}
-                       0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
-                      {% else %}
-                        0px 8px 15px rgba(0, 0, 0, 0.2);
-                      {% endif %}
-                    color: |
-                      {% if is_state('group.kitchen', 'on') %}
-                        white
-                      {% else %}
-                        rgba(0,0,0,.5)
-                      {% endif %}
-                  icon:
-                    '--mdc-icon-size': 40px
-                tap_action:
-                  action: navigate
-                  navigation_path: '#downstairs'
-                hold_action:
-                  action: toggle
-      - type: 'custom:mod-card'
-        style: |
-          ha-card {
-            padding: 10px;
-            background: var( --ha-card-background, var(--card-background-color, white) );
-            border-radius: 30px;
-            }
-        card:
-          type: vertical-stack
-          cards:
-            - type: 'custom:state-switch'
-              entity: hash
-              default: boudoir
-              states:
-                boudoir:
-                  type: grid
-                  cards:
-                    - type: 'custom:button-card'
-                      entity: light.desk_lamp
-                      template:
-                        - light
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.boudoir_ceiling_light
-                      template:
-                        - light
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.hue_play_gradient_lightstrip_1
-                      template:
-                        - light
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.nanoleaf
-                      template:
-                        - light-alt
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.standing_lamp
-                      template:
-                        - light
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.tv_bars
-                      template:
-                        - light
-                        - popup
-                bedroom:
-                  type: grid
-                  cards:
-                    - type: 'custom:button-card'
-                      entity: light.vine_lights
-                      template:
-                        - light-alt
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.bedroom_floor_lamp
-                      template:
-                        - light-alt
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.bedside_lamp
-                      template:
-                        - light-alt
-                        - popup
-                office:
-                  type: grid
-                  cards:
-                    - type: 'custom:button-card'
-                      entity: light.office_strip
-                      template:
-                        - light
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.office_lamp_1
-                      template:
-                        - light
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: light.desk_lamp_2
-                      template:
-                        - light
-                        - popup
-                downstairs:
-                  type: grid
-                  cards:
-                    - type: 'custom:button-card'
-                      icon: 'hass:fridge'
-                      entity: group.kitchen
-                      template:
-                        - light-alt
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: group.livingroom
-                      template:
-                        - light-alt
-                        - popup
-                    - type: 'custom:button-card'
-                      entity: vacuum.rug_b
-                      template:
-                        - vacuum
-                      tap_action:
-                        action: more-info
-            - type: grid
-              cards:
-                - type: 'custom:button-card'
-                  entity: scene.morning
-                  template: scene
-                - type: 'custom:button-card'
-                  entity: scene.evening
-                  template: scene
-                - type: 'custom:button-card'
-                  entity: scene.in_bed
-                  template: scene
-                - type: 'custom:button-card'
-                  entity: scene.thinkin_of_you
-                  template: scene
-                  name: T.O.Y.
-                - type: 'custom:button-card'
-                  entity: scene.nebula
-                  template: scene
-                - type: 'custom:button-card'
-                  entity: script.movie_mode_actions
-                  name: Movie
-                  tap_action:
-                    action: call-service
-                    service: toggle
-                  template:
-                    - scene
-              square: false
-      - type: grid
-        cards:
-          - type: 'custom:button-card'
-            tap_action:
-              action: more-info
-            entity: climate.gemodule0fd7
-            name: Window A/C
-            template:
-              - spin_animation
-              - footer_card
-            state:
-              - value: cool
-                styles:
-                  state:
-                    - color: '#00BFFF'
-          - type: 'custom:button-card'
-            entity: switch.air_purifier
-            template:
-              - footer_card
-              - spin_animation
-            state:
-              - value: 'on'
-                styles:
-                  icon:
-                    - animation: spin .5s linear infinite
-        square: false
-        columns: 2
-
-  ```
-</details>
-
-<details>
-  <summary>Auto Feed Card</summary>
-  
-  I wanted to create a feed type of card that reports any low batteries, washer/dryer states, and activity of certain entities. Also give some info like weather, time, and house temperatures.
-  <img width="455" alt="feed" src="https://user-images.githubusercontent.com/54859942/120509530-95c29480-c396-11eb-8c48-7b9beff26729.png">
-  ## Code
-  ```
 type: vertical-stack
-    cards:
-      - type: 'custom:button-card'
-        tap_action:
-          action: none
-        hold_action:
-          action: navigate
-          navigation_path: dev2
-        entity: sensor.timenew
-        show_icon: false
-        show_name: false
-        show_state: true
-        styles:
-          card:
-            - background: none
-            - box-shadow: none
-            - padding: 0
-          state:
-            - font-size: 50px
-            - font-family: Assistant
-      - type: 'custom:mod-card'
-        style: |
-          ha-card {
-            padding: 10px;
-            background: var( --ha-card-background, var(--card-background-color, white) );
-            border-radius: 30px;
-            }
-        card:
-          type: vertical-stack
-          cards:
-            - type: weather-forecast
-              entity: weather.home_2
-              show_forecast: false
-              style: |
-                ha-card {
-                  background: rgba(255,255,255,.1);
-                  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                  font-family: Assistant;
-                }
-            - type: vertical-stack
-              cards:
-                - type: conditional
-                  conditions:
-                    - entity: sensor.washer
-                      state: 'on'
-                  card:
-                    type: entities
-                    entities:
-                      - entity: sensor.washer_state
-                        name: Washer
-                        secondary_info:
-                          entity: sensor.washer_remaining_time
-                          prefix: 'Time Remaining: '
-                          postfix: ' minutes'
-                    style: |
-                      ha-card {
-                        background: rgba(255,255,255,.1);
-                        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                        font-family: Assistant;
-                      }
-                - type: conditional
-                  conditions:
-                    - entity: sensor.dryer
-                      state: 'on'
-                  card:
-                    type: entities
-                    entities:
-                      - entity: sensor.dryer_state
-                        name: Dryer
-                        secondary_info:
-                          entity: sensor.dryer_remaining_time
-                          prefix: 'Time Remaining: '
-                          postfix: ' minutes'
-                    style: |
-                      ha-card {
-                        background: rgba(255,255,255,.1);
-                        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                        font-family: Assistant;
-                      }
-            - type: 'custom:auto-entities'
+cards:
+  - type: entities
+    style: |
+      ha-card {
+        background: none;
+        box-shadow: none;
+        }
+    entities:
+      - type: custom:paper-buttons-row
+        buttons:
+          - entity: group.boudoir
+            name: false
+            icon: hass:sofa-single
+            style:
+              button:
+                background: rgba(255,255,255,.1)
+                box-shadow: >
+                  {% if is_state('group.boudoir', 'on') %}
+
+                  0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px
+                  rgba(255,255,255,.5)
+
+                  {% else %}
+                    0px 8px 15px rgba(0, 0, 0, 0.2);
+                  {% endif %}
+                border-radius: 50px
+                padding: 20px
+                color: |
+                  {% if is_state('group.boudoir', 'on') %}
+                    white
+                  {% else %}
+                    rgba(0,0,0,.5)
+                  {% endif %}
+              icon:
+                '--mdc-icon-size': 40px
+            state_styles:
+              '#boudoir':
+                button:
+                  background: rgba(255,255,255,.5)
+                  box-shadow: 0 0 15px rgba(255,255,255,.6)
+            tap_action:
+              action: navigate
+              navigation_path: '#boudoir'
+            hold_action:
+              action: toggle
+          - entity: group.bedroom
+            name: false
+            icon: hass:bed-king
+            style:
+              button:
+                background: rgba(255,255,255,.1)
+                border-radius: 50px
+                padding: 20px
+                box-shadow: |
+                  {% if is_state('group.bedroom', 'on') %}
+                   0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
+                  {% else %}
+                    0px 8px 15px rgba(0, 0, 0, 0.2);
+                  {% endif %}
+                color: |
+                  {% if is_state('group.bedroom', 'on') %}
+                    white
+                  {% else %}
+                    rgba(0,0,0,.5)
+                  {% endif %}
+              icon:
+                '--mdc-icon-size': 40px
+            tap_action:
+              action: navigate
+              navigation_path: '#bedroom'
+            hold_action:
+              action: toggle
+          - entity: group.office
+            name: false
+            icon: hass:laptop
+            style:
+              button:
+                background: rgba(255,255,255,.1)
+                border-radius: 50px
+                padding: 20px
+                box-shadow: |
+                  {% if is_state('group.office', 'on') %}
+                    0px 8px 15px rgba(0, 0, 0, 0.2),inset 0 0 10px rgba(255,255,255,.5)
+                  {% else %}
+                    0px 8px 15px rgba(0, 0, 0, 0.2);
+                  {% endif %}
+                color: |
+                  {% if is_state('group.office', 'on') %}
+                    white
+                  {% else %}
+                    rgba(0,0,0,.5)
+                  {% endif %}
+              icon:
+                '--mdc-icon-size': 40px
+            tap_action:
+              action: navigate
+              navigation_path: '#office'
+            hold_action:
+              action: toggle
+          - entity: group.kitchen
+            name: false
+            icon: hass:stairs-down
+            style:
+              button:
+                background: rgba(255,255,255,.1)
+                border-radius: 50px
+                padding: 20px
+                box-shadow: |
+                  {% if is_state('group.kitchen', 'on') %}
+                   0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
+                  {% else %}
+                    0px 8px 15px rgba(0, 0, 0, 0.2);
+                  {% endif %}
+                color: |
+                  {% if is_state('group.kitchen', 'on') %}
+                    white
+                  {% else %}
+                    rgba(0,0,0,.5)
+                  {% endif %}
+              icon:
+                '--mdc-icon-size': 40px
+            tap_action:
+              action: navigate
+              navigation_path: '#downstairs'
+            hold_action:
+              action: toggle
+    view_layout:
+      grid-area: orbs
+      place-self: end stretch
+  - type: entities
+    entities:
+      - type: custom:state-switch
+        entity: hash
+        default: boudoir
+        states:
+          boudoir:
+            type: custom:mod-card
+            card:
+              type: custom:auto-entities
               card:
-                type: entities
-                state_color: false
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: rgba(255,255,255,.1);
-                      box-shadow: 0 8px 15px rgba(0,0,0,.2);
-                      font-family: Assistant;
-                      }
+                type: grid
+                square: false
+                columns: 3
               filter:
                 include:
-                  - entity_id: alarm_control_panel.aarlo_base_station
+                  - domain: light
+                    area: Boudoir
                     options:
-                      icon: 'hass:cctv'
-                      secondary_info: last-changed
-                  - name: '/[Bb]attery/'
-                    state: <= 10
-                    options: {}
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - light
+                  - entity_id: light.boudoir_ceiling_light
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - light
+                  - entity_id: light.tv_bars
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - light
+                  - entity_id: media_player.boudoir_tv_2
+                    options:
+                      type: custom:button-card
+                      tap_action:
+                        action: more-info
+                      template:
+                        - grid_card
+                        - tv
+                  - entity_id: switch.air_purifier
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                      state:
+                        - value: 'on'
+                          spin: true
                 exclude:
-                  - entity_id: sensor.rug_b_battery_level
-                  - entity_id: sensor.fire_tablet_battery_level
-              show_empty: false
+                  - entity_id: light.ceiling_1
+                  - entity_id: light.ceiling_2
+                  - entity_id: light.hue_play_1
+                  - entity_id: light.hue_play_1_2
+              card_param: cards
+          bedroom:
+            type: custom:mod-card
+            card:
+              type: custom:auto-entities
+              card:
+                type: grid
+                square: false
+                columns: 3
+              filter:
+                include:
+                  - domain: light
+                    area: Bedroom
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - light
+                  - entity_id: media_player.bedroom_tv
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - tv
+                      tap_action:
+                        action: more-info
+                  - entity_id: switch.bedroom_ac
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                exclude:
+                  - entity_id: light.ceiling_1
+                  - entity_id: light.ceiling_2
+                  - entity_id: light.hue_play_1
+                  - entity_id: light.hue_play_1_2
+              card_param: cards
+          office:
+            type: custom:mod-card
+            card:
+              type: custom:auto-entities
+              card:
+                type: grid
+                square: false
+                columns: 3
+              filter:
+                include:
+                  - domain: light
+                    area: Crixle's Room
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - light
+                  - entity_id: media_player.office_speaker
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                        - tv
+                      tap_action:
+                        action: more-info
+                  - entity_id: switch.clem
+                    options:
+                      type: custom:button-card
+                      template:
+                        - grid_card
+                      lock:
+                        enabled: true
+                exclude:
+                  - entity_id: light.ceiling_1
+                  - entity_id: light.ceiling_2
+                  - entity_id: light.hue_play_1
+                  - entity_id: light.hue_play_1_2
+              card_param: cards
               sort:
-                method: none
-            - type: grid
+                method: domain
+                reverse: false
+                numeric: false
+          downstairs:
+            type: custom:mod-card
+            card:
+              type: grid
               cards:
-                - type: sensor
-                  entity: sensor.lumi_lumi_weather_temperature
-                  graph: line
-                  name: Boudoir
-                  style: |
-                    ha-card {
-                      overflow: hidden;
-                      background: rgba(255,255,255,.1);
-                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                      font-family: Assistant;
-                    }
-                - type: sensor
-                  entity: sensor.philips_motion_sensor_temperature
-                  graph: line
-                  name: Kitchen
-                  style: |
-                    ha-card {
-                      overflow: hidden;
-                      background: rgba(255,255,255,.1);
-                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                      font-family: Assistant;
-                    }
-                - type: sensor
-                  entity: sensor.lumi_lumi_weather_0a037c06_temperature
-                  graph: line
-                  name: Tank
-                  style: |
-                    ha-card {
-                      overflow: hidden;
-                      background: rgba(255,255,255,.1);
-                      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                      font-family: Assistant;
-                    }
-              square: false
-            - type: 'custom:paper-buttons-row'
-              buttons:
-                - name: All Sensors
-                  style:
-                    button:
-                      background: 'rgba(255,255,255,.1)'
-                      border-radius: 30px
-                      font-size: 20px
-                      font-family: Assistant
-                      padding: 7px 30px
-                      box-shadow: '0px 8px 15px rgba(0, 0, 0, 0.2)'
-                  tap_action:
-                    action: fire-dom-event
-                    browser_mod:
-                      command: popup
-                      title: Sensors
-                      card:
-                        type: 'custom:swipe-card'
-                        cards:
-                          - type: 'custom:vertical-stack-in-card'
-                            style: |
-                              ha-card {
-                                background: none;
-                                }
-                            cards:
-                              - type: history-graph
-                                style: |
-                                  ha-card {
-                                    box-shadow: none;
-                                  }
-                                entities:
-                                  - entity: sensor.lumi_lumi_weather_temperature
-                                    name: Boudoir
-                                  - entity: sensor.philips_motion_sensor_temperature
-                                    name: Kitchen
-                                  - entity: sensor.lumi_lumi_weather_0a037c06_temperature
-                                    name: Clem's Tank
-                                refresh_interval: 0
-                                hours_to_show: 48
-                                title: House Temperatures
-                              - type: history-graph
-                                style: |
-                                  ha-card {
-                                    box-shadow: none;
-                                  }
-                                entities:
-                                  - entity: sensor.lumi_lumi_weather_humidity
-                                    name: Boudoir
-                                  - entity: sensor.lumi_lumi_weather_0a037c06_humidity
-                                    name: Clem's Tank
-                                hours_to_show: 48
-                                refresh_interval: 0
-                                title: House Humidity
-                          - type: vertical-stack
-                            cards:
-                              - type: 'custom:vertical-stack-in-card'
-                                style: |
-                                  ha-card {
-                                    background: none;
-                                    }
-                                cards:
-                                  - type: 'custom:button-card'
-                                    entity: sensor.pot_plant_sensor_battery
-                                    show_state: true
-                                    name: Pot Plant
-                                    layout: icon_name_state2nd
-                                    icon: 'hass:cannabis'
-                                  - type: horizontal-stack
-                                    cards:
-                                      - type: gauge
-                                        entity: sensor.pot_plant_temperature
-                                        min: 0
-                                        max: 100
-                                        name: Temperature
-                                        severity:
-                                          green: 70
-                                          yellow: 60
-                                          red: 58
-                                      - type: gauge
-                                        entity: sensor.pot_plant_humidity
-                                        min: 0
-                                        max: 100
-                                        name: Humidity
-                              - type: 'custom:mod-card'
-                                style: |
-                                  ha-card {
-                                    padding: 10px;
-                                    background: var( --ha-card-background, var(--card-background-color, white) );
-                                  }
-                                card:
-                                  type: vertical-stack
-                                  cards:
-                                    - type: 'custom:button-card'
-                                      tap_action:
-                                        action: more-info
-                                      entity: switch.clem
-                                      icon: 'fas:dragon'
-                                      layout: icon_name_state2nd
-                                      show_state: true
-                                      show_last_changed: true
-                                      name: Clem's Tank
-                                      styles:
-                                        card:
-                                          - background: none
-                                          - box-shadow: none
-                                    - type: grid
-                                      columns: 2
-                                      cards:
-                                        - type: sensor
-                                          entity: >-
-                                            sensor.lumi_lumi_weather_0a037c06_temperature
-                                          graph: line
-                                          style: |
-                                            ha-card {
-                                              background: none;
-                                              box-shadow: none;
-                                              }
-                                          name: Temperature
-                                        - type: sensor
-                                          entity: >-
-                                            sensor.lumi_lumi_weather_0a037c06_humidity
-                                          graph: line
-                                          name: Humidity
-                                          detail: 1
-                                          style: |
-                                            ha-card {
-                                              background: none;
-                                              box-shadow: none;
-                                              }
-                                      square: true
-                          - type: 'custom:vertical-stack-in-card'
-                            style: |
-                              ha-card {
-                                background: none;
-                                }
-                            cards:
-                              - type: 'custom:button-card'
-                                tap_action:
-                                  action: more-info
-                                entity: binary_sensor.pi_hole
-                                icon: 'hass:pi-hole'
-                                show_state: true
-                                show_last_changed: true
-                                layout: icon_name_state2nd
-                                styles:
-                                  state:
-                                    - padding: 15px
-                              - type: history-graph
-                                entities:
-                                  - entity: sensor.pihole_cpu_usage
-                                    name: CPU
-                                  - entity: sensor.pihole_memory_use
-                                    name: Memory
-                                  - entity: sensor.pihole_temperature
-                                    name: Temperature
-                                hours_to_show: 48
-                                refresh_interval: 0
-                              - type: glance
-                                entities:
-                                  - entity: sensor.pi_hole_ads_blocked_today
-                                    name: Blocked Today
-                                show_name: true
-            - type: 'custom:home-feed-card'
-              show_empty: false
-              more_info_on_tap: true
-              state_color: true
-              compact_mode: true
-              include_history: true
-              style: |
-                ha-card {
-                  background: rgba(255,255,255,.1);
-                  font-family: Assistant;
-                  margin-top: 5px;
-                  border-radius: 30px;
-                  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-                  }
-              entities:
-                - entity: vacuum.rug_b
-                  content_template: |
-                    {{friendly_name}} {{state}}
-                - entity: lock.front_door
-                  content_template: |
-                    {{friendly_name}} {{state}}
-                - entity: lock.back_door
-                  content_template: |
-                    {{friendly_name}} {{state}}
-                - entity: alarm_control_panel.aarlo_base_station
-                  content_template: |
-                    {{friendly_name}} {{state}}
-                - entity: sensor.last_boot
-                  icon: 'hass:home-assistant'
-                  name: Last Restarted
-                - entity: group.kitchen
-                  name: Kitchen Lights
-                  content_template: |
-                    Kitchen Lights {{state}}
+                - type: custom:button-card
+                  entity: group.kitchen
+                  template:
+                    - grid_card
+                - type: custom:button-card
+                  entity: group.livingroom
+                  template:
+                    - grid_card
+                - type: custom:button-card
+                  entity: vacuum.rug_b
+                  template:
+                    - grid_card
+                - type: custom:button-card
+                  entity: media_player.kitchen_sonos
+                  template:
+                    - grid_card
+                    - tv
+    view_layout:
+      grid-area: control
+      place-self: start stretch
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 30px;
+        }
+
 
   ```
-
 </details>
+
 
 <details>
   <summary>Media Card</summary>
-  This is just a simple card made of two cards which allows me to adjust volume and skip content on my Chromecast, and on the bottom adjust my Philips Sync Box's      modes and brightness without using their app. The card will switch to our bedroom TV if the bedroom is selected on the light control card. Note: The shortcuts on the sync box are activating scripts which just run services. Can be easily achieved by just calling the service within the button, but I'm just too lazy to go back and rewrite it.
+  This card pops up when I select the main TV, and allows me to skip content and adjust volume. Below that allows me to control our Philips Sync Box and change the entertainment 
+ zones right blow it. To paste this 
                      
-  <img width="418" alt="Screen Shot 2021-06-02 at 12 17 56 PM" src="https://user-images.githubusercontent.com/54859942/120516291-2ef4a980-c39d-11eb-8bac-ba86cd85edb7.png">
+  ![Media](https://user-images.githubusercontent.com/54859942/132930473-da620641-11dc-4cf0-95d3-e256d638f508.png)
+
                      
   ```
-type: 'custom:state-switch'
-    entity: hash
-    default: boudoir
-    transition: swap-right
-    transition_time: 250
-    states:
-      bedroom:
-        type: 'custom:mini-media-player'
-        entity: media_player.bedroom_tv
-        volume_stateless: true
-        artwork: material
-        name: Bedroom TV
-      boudoir:
-        type: 'custom:mod-card'
+  media_player.boudoir_tv_2:  ### Must be put into lovelace-ui file with appropriate entities
+    title: TV Controls
+    card:
+      type: entities
+      entities:
+        - type: custom:mini-media-player
+          entity: media_player.boudoir_tv_2
+          volume_stateless: true
+          card_mod:
+            style: |
+              ha-card {
+                box-shadow: none;
+              }
+        - type: custom:mini-media-player
+          entity: media_player.sync_box
+          hide:
+            controls: true
+            power: true
+            source: true
+          card_mod:
+            style: |
+              ha-card {
+                box-shadow: none;
+              }
+        - type: custom:mod-card
+          card:
+            type: grid
+            cards:
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxtogglevideomode
+                layout: vertical
+                show_name: false
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxtogglemusicmode
+                layout: vertical
+                show_name: false
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxtogglegamemode
+                layout: vertical
+                show_name: false
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxdecrease
+                layout: vertical
+                show_name: false
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxtoggle
+                layout: vertical
+                show_name: false
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxintensityincrease
+                layout: vertical
+                show_name: false
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxstriponly
+                show_icon: false
+                name: Strip Only
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxstripbars
+                show_icon: false
+                name: Strip + Bars
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+              - type: custom:button-card
+                tap_action:
+                  action: toggle
+                entity: script.syncboxalllights
+                show_icon: false
+                name: All Lights
+                template: scene
+                styles:
+                  card:
+                    - box-shadow: >-
+                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
+                        3px 6px
+            square: false
+      card_mod:
         style: |
           ha-card {
-            background: var( --ha-card-background, var(--card-background-color, white) );
-            padding: 7px;
-            border-radius: 30px;
-            }
-        card:
-          type: vertical-stack
-          style: |
-            ha-card {
-              box-shadow: 0 8px 15px rgba(0,0,0,.2)
-          cards:
-            - type: 'custom:mini-media-player'
-              group: false
-              entity: media_player.boudoir_tv_2
-              artwork: material
-              volume_stateless: true
-              toggle_power: false
-            - type: 'custom:mini-media-player'
-              hide:
-                controls: true
-                power: true
-                icon: true
-              shortcuts:
-                hide_when_off: true
-                columns: 3
-                align_text: center
-                buttons:
-                  - type: script
-                    id: script.syncboxtogglevideomode
-                    icon: 'hass:video'
-                  - type: script
-                    id: script.syncboxtogglemusicmode
-                    icon: 'hass:music'
-                  - type: script
-                    id: script.syncboxtogglegamemode
-                    icon: 'hass:google-controller'
-                  - type: script
-                    id: script.syncboxdecrease
-                    icon: 'mdi:chevron-double-left'
-                  - type: script
-                    id: script.syncboxtoggle
-                    icon: 'mdi:circle-double'
-                  - type: script
-                    id: script.syncboxintensityincrease
-                    icon: 'mdi:chevron-double-right'
-              entity: media_player.sync_box
-              group: true
-
+            font-family: DM Sans;
+            box-shadow: none;
+          }
   ```
 </details>        
                      
@@ -1292,11 +1045,92 @@ type: 'custom:state-switch'
         data:
           name: |
             {% if is_state('sun.sun', 'above_horizon') %}
-              ios-custom-light-mod
+              "Custom Light Mode"
             {% else %}
-              ios-dark-mode-blue-red-alternative
+              "Custom Dark Mode"
             {% endif %}
     mode: single
+  ```
+
+</details>
+<details>
+  <summary>Other Useful Automations</summary>
+  
+  ### Motion Lights with time based brightnesses
+  ```
+alias: Hall Motion Lights
+description: ''
+trigger:
+  - type: occupied
+    platform: device
+    device_id: 182bb3b5150abbefa4916f863008bb75
+    entity_id: binary_sensor.bathroom_hall_motion_sensor_occupancy
+    domain: binary_sensor
+condition:
+  - condition: or
+    conditions:
+      - condition: state
+        entity_id: person.xxx
+        state: home
+      - condition: state
+        entity_id: person.xxx
+        state: home
+action:
+  - choose:
+      - conditions:
+          - condition: time
+            after: '22:00'
+            before: '08:00:00'
+        sequence:
+          - service: light.turn_on
+            target:
+              device_id:
+                - 345a2abaf6f0eef2d51f92cf51affa9b
+                - 6949950b1a739fd3207efdc18b72307c
+            data:
+              brightness_pct: 20
+          - wait_for_trigger:
+              - type: not_occupied
+                platform: device
+                device_id: 182bb3b5150abbefa4916f863008bb75
+                entity_id: binary_sensor.bathroom_hall_motion_sensor_occupancy
+                domain: binary_sensor
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 0
+                  milliseconds: 0
+          - service: light.turn_off
+            target:
+              device_id:
+                - 6949950b1a739fd3207efdc18b72307c
+                - 345a2abaf6f0eef2d51f92cf51affa9b
+    default:
+      - service: light.turn_on
+        target:
+          device_id:
+            - 345a2abaf6f0eef2d51f92cf51affa9b
+            - 6949950b1a739fd3207efdc18b72307c
+        data:
+          brightness_pct: 80
+      - wait_for_trigger:
+          - type: not_occupied
+            platform: device
+            device_id: 182bb3b5150abbefa4916f863008bb75
+            entity_id: binary_sensor.bathroom_hall_motion_sensor_occupancy
+            domain: binary_sensor
+            for:
+              hours: 0
+              minutes: 3
+              seconds: 0
+              milliseconds: 0
+      - service: light.turn_off
+        target:
+          device_id:
+            - 345a2abaf6f0eef2d51f92cf51affa9b
+            - 6949950b1a739fd3207efdc18b72307c
+mode: single
+
   ```
 
 </details>
