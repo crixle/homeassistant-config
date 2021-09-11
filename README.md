@@ -83,6 +83,7 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
   <summary>Theme</summary>
   
   You probably recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
+ # Optional: The font I'm using is [DM Sans](https://fonts.google.com/specimen/DM+Sans) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
 
 </details>
 
