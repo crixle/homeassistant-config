@@ -14,6 +14,7 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 - Automatic light/dark mode
 - Media & Sync Box Control
 - Automatic light/dark mode based on sun
+- Room tracking for automations using [RoomAssistant](https://www.room-assistant.io/)
 ### Hardware
  - Raspberry Pi 4B 4GB
  - [Samsung 500GB SSD via USB](https://www.bestbuy.com/site/samsung-t7-500gb-external-usb-3-2-gen-2-portable-solid-state-drive-with-hardware-encryption-indigo-blue/6408298.p?skuId=6408298)
@@ -67,7 +68,14 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 
 
 </details>
+<details>
+  <summary>Wall Mounted Tablet</summary>
+  
+  I have a Kindle Fire 10 (2019) mounted to the wall with a few command strips, and it works beautifully! I initially used FullyKiosk to isolate Home Assistant, however it can only access a really old version of Android WebView which made it really slow and unresponsive. I was shocked when I tried WallPanel and it works almost flawlessly! I know leaving the Kindle plugged in 24/7 is really bad for the battery but :shrug:
+ ![IMG_2713](https://user-images.githubusercontent.com/54859942/132931199-e96f00c3-869d-463b-91e6-b6e130540f9a.JPG)
 
+
+</details>
 <details>
   <summary>Theme</summary>
   
