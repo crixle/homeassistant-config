@@ -3,7 +3,10 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 </br>
 **NOTE: All cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
 
-![HA-Banner](https://user-images.githubusercontent.com/54859942/132930175-cf1af00c-8d36-4426-8032-c4fce5668be1.png)
+
+![IMG_0024](https://user-images.githubusercontent.com/54859942/133687406-6c9f1119-37f4-4bf7-bc8b-363cd3f05252.jpeg)
+
+
 ### Quick Info at a Glance
 ![Popups](https://user-images.githubusercontent.com/54859942/132931495-9bd4d51e-e8ca-4b76-baa3-ce5ba415df07.gif)
 
