@@ -20,58 +20,41 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 - Media & Sync Box Control
 - Automatic light/dark mode based on sun
 - Room tracking for automations using [RoomAssistant](https://www.room-assistant.io/)
-### Hardware
- - Raspberry Pi 4B 4GB
- - [Samsung 500GB SSD via USB](https://www.bestbuy.com/site/samsung-t7-500gb-external-usb-3-2-gen-2-portable-solid-state-drive-with-hardware-encryption-indigo-blue/6408298.p?skuId=6408298)
- -  [HUSBZB Usb Hub (Zigbee & Z-Wave)](https://www.amazon.com/gp/product/B01GJ826F8/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
- -  Philips Hue A19 Bulbs + Hub
- -  [These cheap Zigbee bulbs that work surprisingly well](https://www.homedepot.com/p/EcoSmart-60-Watt-Equivalent-A19-Dimmable-SMART-LED-Light-Bulb-Tunable-White-2-Pack-A9A19A60WESDZ02/309683612)
- -  Amazon HD Fire 10 (2019) for wall mounted tablet, running [WallPanel](https://play.google.com/store/apps/details?id=com.thanksmister.iot.wallpanel&hl=en_US&gl=US)
- -  Aqara Motion/Humidity/Temperature Sensors (Controlled with HUSBZB adapter, not Aqara hub)
- -  2x Philips Motion Sensor with ambient temperature
- -  Philips Sync Box
- -  Philips 55" Gradient Strip
- -  [JHome Zigbee Smart Plugs](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+
+Hardware | Quantity | Find
+-------- | -------- | ------
+Raspberry Pi 4B 4GB | 1 | link
+Samsung 500GB SSD via USB | 1 | [link](https://www.bestbuy.com/site/samsung-t7-500gb-external-usb-3-2-gen-2-portable-solid-state-drive-with-hardware-encryption-indigo-blue/6408298.p?skuId=6408298)
+HUSBZB USB Hub (Zigbee & Z-Wave) |1 | [link](https://www.amazon.com/gp/product/B01GJ826F8/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
+Philips Hue A19 Bulbs + Hub (1) | 26 | [link](https://www.bestbuy.com/site/philips-hue-white-and-color-ambiance-a19-bluetooth-75w-smart-led-starter-kit/6472224.p?skuId=6472224)
+Budget Friendly Zigbee Bulbs (Temp Only) | 6 | [link](https://www.homedepot.com/p/EcoSmart-60-Watt-Equivalent-A19-Dimmable-SMART-LED-Light-Bulb-Tunable-White-2-Pack-A9A19A60WESDZ02/309683612)
+Amazon HD Fire 10 (2019) w/ [WallPanel](https://play.google.com/store/apps/details?id=com.thanksmister.iot.wallpanel&hl=en_US&gl=US) | 1 | 
+Aqara Sensors (Motion, Temp/Hum) | 3 | [link](https://www.aqara.com/us/home.html)
+Philips Motion Sensor with ambient temperature | 3 | [link](https://www.bestbuy.com/site/philips-hue-motion-sensor-white/5540102.p?skuId=5540102)
+Philips Sync Box | 1 | [link](https://www.bestbuy.com/site/philips-hue-play-hdmi-sync-box-black/6371722.p?skuId=6371722)
+Philips 55" Gradient Strip | 1 | [link](https://www.bestbuy.com/site/philips-hue-play-gradient-lightstrip-55/6427737.p?skuId=6427737)
+JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 
 
-<details>
-  <summary>HACS Addons</summary>
   
   # HACS Addons
-  | Card | Link |
-  | :--- | ---- |
-  | Button Card | [link](https://github.com/custom-cards/button-card) |
-  | Vertical Stack In Card | [link](https://github.com/custom-cards/vertical-stack-in-card) |
-  | CSS Card Mod | [link](https://github.com/thomasloven/lovelace-card-mod) |
-  | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
-  | Light Popup Card | [link](https://github.com/DBuit/light-popup-card) |
-  | Auto Entities | [link](https://github.com/thomasloven/lovelace-auto-entities) |
-  | Browser Mod | [link](https://github.com/thomasloven/hass-browser_mod) |
-  | State-Switch | [link](https://github.com/thomasloven/lovelace-state-switch) |
-  | Home Feed Card | [link](https://github.com/gadgetchnnel/lovelace-home-feed-card) |
-  | Mini Media Player | [link](https://github.com/kalkih/mini-media-player) |
-  | Aarlo | [link](https://github.com/twrecked/lovelace-hass-aarlo) |
-  | Swipe Card | [link](https://github.com/bramkragten/swipe-card) |
-  | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
-  | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) |
-  | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
+  | Card | Link | Card | Link
+  | :--- | ---- | ---- | ----
+  | Button Card | [link](https://github.com/custom-cards/button-card) | Vertical Stack In Card | [link](https://github.com/custom-cards/vertical-stack-in-card) | CSS Card Mod | [link](https://github.com/thomasloven/lovelace-card-mod) |
+  | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) | Light Popup Card | [link](https://github.com/DBuit/light-popup-card) |
+  | Auto Entities | [link](https://github.com/thomasloven/lovelace-auto-entities) | Browser Mod | [link](https://github.com/thomasloven/hass-browser_mod) |
+  | State-Switch | [link](https://github.com/thomasloven/lovelace-state-switch) | Home Feed Card | [link](https://github.com/gadgetchnnel/lovelace-home-feed-card) |
+  | Mini Media Player | [link](https://github.com/kalkih/mini-media-player) | Aarlo | [link](https://github.com/twrecked/lovelace-hass-aarlo) |
+  | Swipe Card | [link](https://github.com/bramkragten/swipe-card) | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
+  | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
   | Kiosk Mode | [link](https://github.com/maykar/kiosk-mode)
  
-</details>
-<details>
-  <summary>Light Mode</summary>
-  
-  ![LightDash](https://user-images.githubusercontent.com/54859942/132930222-52fafde5-5684-4f32-8028-9db8475146c5.png)
-
-
-</details>
 
 
 <details>
-  <summary>Dark Mode</summary>
+  <summary>Dark Mode </summary>
   
   ![DarkDash](https://user-images.githubusercontent.com/54859942/132930231-127aca01-695a-44e3-8608-d935f75408b8.png)
-
 
 </details>
 <details>
