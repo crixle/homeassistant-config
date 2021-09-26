@@ -4,16 +4,14 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 **NOTE: All cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
 
 
-![IMG_0024](https://user-images.githubusercontent.com/54859942/133687406-6c9f1119-37f4-4bf7-bc8b-363cd3f05252.jpeg)
+![LightDash](https://user-images.githubusercontent.com/54859942/134824129-26653897-72fc-493c-a200-f5dcb984680a.png)
 
 
-### Quick Info at a Glance
-![Popups](https://user-images.githubusercontent.com/54859942/132931495-9bd4d51e-e8ca-4b76-baa3-ce5ba415df07.gif)
 
 
 ### Features
 - Adaptive layout thanks to [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
-- Light control center that switches between rooms
+- [Light control center that switches between rooms](#light-control-card)
 - Interactive dynamic floor plan
 - Arlo Pro 3 camera control/library access
 - Automatic light/dark mode
@@ -47,7 +45,7 @@ JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2
   | Mini Media Player | [link](https://github.com/kalkih/mini-media-player) | Aarlo | [link](https://github.com/twrecked/lovelace-hass-aarlo) |
   | Swipe Card | [link](https://github.com/bramkragten/swipe-card) | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
   | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
-  | Kiosk Mode | [link](https://github.com/maykar/kiosk-mode)
+  | Kiosk Mode | [link](https://github.com/maykar/kiosk-mode) | Hue Icons | [link](https://github.com/arallsopp/hass-hue-icons)
  
 
 
@@ -65,25 +63,24 @@ JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2
 
 
 </details>
-<details>
-  <summary>Theme</summary>
+
+# Theme
   
   You probably recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
- # Optional: The font I'm using is [DM Sans](https://fonts.google.com/specimen/DM+Sans) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
-
-</details>
+ ##### Optional: The font I'm using is [DM Sans](https://fonts.google.com/specimen/DM+Sans) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
 
 
-<details>
-  <summary>Light Control Card</summary>
+
+# Light Control Card
   
   Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
  
   ![Lights](https://user-images.githubusercontent.com/54859942/132930244-e507add3-2313-4adf-bafd-ea6ed2581dff.gif)
 
-  ![lightpopup](https://github.com/crixle/homeassistant-config/blob/main/lightpopup.gif)
- 
-  ```
+<details>
+  <summary>Code</summary>
+  
+```
 type: vertical-stack
 cards:
   - type: entities
@@ -380,18 +377,17 @@ cards:
           border-radius: 30px;
         }
 
-
   ```
 </details>
 
 
-<details>
-  <summary>Media Card</summary>
+# Media Card
   This card pops up when I select the main TV, and allows me to skip content and adjust volume. Below that allows me to control our Philips Sync Box and change the entertainment 
- zones right blow it. To paste this 
+ zones right blow it. I recently added a remote too for simple ADB commands!
                      
   ![Media](https://user-images.githubusercontent.com/54859942/132930473-da620641-11dc-4cf0-95d3-e256d638f508.png)
-
+<details>
+  <summary>Code</summary>
                      
   ```
   media_player.boudoir_tv_2:  ### Must be put into lovelace-ui file with appropriate entities
@@ -540,12 +536,14 @@ cards:
   ```
 </details>        
                      
-<details>
-  <summary>Floor Plan Card</summary>
+# Floor Plan
   
   This card is my favorite because it's informative and let's me look at the entire house in a glance. Best part is that it was relatively easy to make with a bit of patience. I followed [this guide](https://community.home-assistant.io/t/floorplan-ui-with-color-synced-lights/169417) and had it working within a couple hours. The guide allows you to sync the color to match color and brightness, but I had issues with color matching not being accurate so I just match brightness.
   ![floorplan](https://user-images.githubusercontent.com/54859942/120511145-1e8e0000-c398-11eb-93af-11c22549a6e9.gif)
-  ## Code
+<details>
+
+  <summary>Code</summary>
+  
    ```
     type: 'custom:stack-in-card'
     style: |
@@ -1023,10 +1021,13 @@ cards:
   ```
 
 </details>
-<details>
-  <summary>Auto Light/Dark Mode Automation</summary>
+
+# Useful Automations
+
+  ### Make sure you understand the code and modify as necessary!
+  <details>
+  	<summary>Automatic Dark Mode</summary>
   
-  ### Make sure you replace the themes with yours!
   ```
   alias: Auto Lovelace Theme
     description: ''
@@ -1049,12 +1050,11 @@ cards:
             {% endif %}
     mode: single
   ```
-
-</details>
-<details>
-  <summary>Other Useful Automations</summary>
+  </details>
   
-  ### Motion Lights with time based brightnesses
+  <details>
+  	<summary>Motion Lights with time based brightnesses</summary>
+  
   ```
 alias: Hall Motion Lights
 description: ''
