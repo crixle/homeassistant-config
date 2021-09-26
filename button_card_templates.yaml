@@ -1,4 +1,48 @@
+##################################################
+
+These need to be pasted into your lovelace-ui.yaml!
+I provided them in a seperate document to help with
+organization. If you are using HA in YAML mode then 
+you have to import this file!
+
+###################################################
 button_card_templates:
+### Default Card For all tiles ###
+  grid_card:
+    show_state: true
+    aspect_ratio: 1/1
+    tap_action:
+      haptic: light
+      action: toggle
+    styles:
+      card:
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+      grid:
+        - grid-template-areas: |
+            " i . " " n n " " s l "
+      img_cell:
+        - align-self: start
+        - text-align: start
+        - display: inline-block
+        - padding-left: 10px
+      name:
+        - justify-self: start
+        - padding-left: 10px
+        - font-weight: bold
+      state:
+        - justify-self: start
+        - padding-left: 10px
+    state:
+      - value: 'off'
+        styles:
+          card:
+            - filter: opacity(50%)
+          icon:
+            - filter: grayscale(100%)
+            
+### Used in conjunction with "grid_card" to have it change appearence if it's "cleaning" opposed to the default on/off ###
   roomba:
     type: custom:button-card
     template:
@@ -40,7 +84,9 @@ button_card_templates:
           -webkit-transform: translate(0);
           transform: translate(0);
         }
-  camera_button:
+        
+### Toggles cameras on/off below video grid ###
+  camera_button: 
     show_state: true
     layout: icon_name_state2nd
     tap_action:
@@ -62,39 +108,6 @@ button_card_templates:
             - filter: grayscale(100%)
     confirmation:
       text: Are you sure?
-  grid_card:
-    show_state: true
-    aspect_ratio: 1/1
-    tap_action:
-      haptic: light
-      action: toggle
-    styles:
-      card:
-        - box-shadow: >-
-            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
-            7px -3px
-      grid:
-        - grid-template-areas: |
-            " i . " " n n " " s l "
-      img_cell:
-        - align-self: start
-        - text-align: start
-        - display: inline-block
-        - padding-left: 10px
-      name:
-        - justify-self: start
-        - padding-left: 10px
-        - font-weight: bold
-      state:
-        - justify-self: start
-        - padding-left: 10px
-    state:
-      - value: 'off'
-        styles:
-          card:
-            - filter: opacity(50%)
-          icon:
-            - filter: grayscale(100%)
   light:
     template: popup
     state:
@@ -102,22 +115,7 @@ button_card_templates:
         styles:
           icon:
             - color: var(--button-card-light-color)
-  footer_card:
-    tap_action:
-      action: toggle
-    hold_action:
-      action: more-info
-    show_state: true
-    layout: icon_name_state2nd
-    styles:
-      icon:
-        - width: 3
-        - color: '#2ECCFA'
-        - height: 40px
-      card:
-        - box-shadow: 0 8px 15px rgba(0,0,0,.2)
-        - font-family: Assistant
-        - font-size: 20px
+### Used in conjunction with "grid_card" to have icon spin when the state is "on" ###
   spin_animation:
     state:
       - value: 'on'
@@ -138,6 +136,8 @@ button_card_templates:
       ha-card:hover {
         transform: scale(1.05);
       }
+      
+### Buttons for lights in the floor plan ###
   floorbutton:
     aspect_ratio: 1/1
     show_name: false
@@ -155,27 +155,6 @@ button_card_templates:
         styles:
           icon:
             - color: var(--button-card-light-color)
-  door_lock:
-    confirmation:
-      text: >-
-        [[[ return `Are you sure you want to toggle
-        ${entity.attributes.friendly_name}?` ]]]
-    styles:
-      card:
-        - '--mdc-ripple-color': green
-        - border-radius: 20px
-        - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
-    state:
-      - value: unlocked
-        styles:
-          card:
-            - '--mdc-ripple-color': red
-            - '--mdc-ripple-press-opacity': 0.5
-          icon:
-            - color: green
-            - animation: blink 2s ease infinite
-          state:
-            - color: green
   color_light:
     styles:
       card:
@@ -183,6 +162,8 @@ button_card_templates:
         - height: 4em
         - width: 4em
         - margin: 4px
+        
+### Any entity with this template will have a HomeKit looking slider for color/brightness ###
   popup:
     hold_action:
       action: fire-dom-event
@@ -327,33 +308,6 @@ button_card_templates:
       ha-card:hover {
         transform: scale(1.05);
         }
-  vacuum:
-    aspect_ratio: 1/1
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-        }
-    styles:
-      state:
-        - font-size: 20px
-      card:
-        - border-radius: 30px
-        - font-family: DM Sans
-        - aspect-ratio: 1/1
-        - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
-        - background: rgba(255,255,255,.1
-    state:
-      - value: cleaning
-        styles:
-          card:
-            - background: rgba(255,255,255,.8)
-            - border: 1px solid white
-            - box-shadow: 0 0 10px white, inset 0 0 5px white
-          state:
-            - animation: blink 2s ease infinite
-            - color: rgb(100,100,255)
-          icon:
-            - color: rgb(100,100,255)
   tv:
     aspect_ratio: 1/1
     state:
@@ -370,43 +324,11 @@ button_card_templates:
         styles:
           icon:
             - color: rgb(1, 182, 253)
+### Used for "grid_card" when the entity doesn't change color. So basically just adds a visual indicator when the entity is on. ###
   light-alt:
     state:
       - value: 'on'
         styles:
           icon:
             - color: var(--accent-color)
-  light-temp:
-    tap_action:
-      haptic: light
-      action: toggle
-    aspect_ratio: 1/1
-    styles:
-      name:
-        - padding: 8px 1em
-        - font-size: 20px
-      card:
-        - border-radius: 30px
-        - box-shadow: none
-        - background: rgba(255,255,255,.1)
-      icon:
-        - color: var(--button-card-light-color)
-    state:
-      - value: 'on'
-        styles:
-          card:
-            - background: rgba(255,255,255,.8)
-            - box-shadow: >-
-                0 0 15px var(--button-card-light-color), inset 0 0 60px
-                var(--button-card-light-color)
-          name:
-            - mix-blend-mode: difference
-            - font-weight: bold
-          state:
-            - color: rgba(0, 0, 0, 0.6)
-          icon:
-            - padding: 10px
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-      }
+
