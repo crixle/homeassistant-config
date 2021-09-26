@@ -12,11 +12,10 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 ### Features
 - Adaptive layout thanks to [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
 - [Light control center that switches between rooms](#light-control-card)
-- Interactive dynamic floor plan
+- [Dynamic Floor Plan](#floor-plan)
 - Arlo Pro 3 camera control/library access
-- Automatic light/dark mode
-- Media & Sync Box Control
-- Automatic light/dark mode based on sun
+- [Automatic light/dark mode](#useful-automations)
+- [Media & Sync Box Control](#media-card)
 - Room tracking for automations using [RoomAssistant](https://www.room-assistant.io/)
 
 Hardware | Quantity | Find
