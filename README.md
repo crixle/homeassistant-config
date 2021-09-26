@@ -1,11 +1,10 @@
 # Crixle's Dashboard
 I've always loved HomeKit, but it lacks functionality and integration with many of my devices so I created this dashboard to give off iOS vibes but gives me the versatility my smart home needs. </br>
 </br>
-**NOTE: All cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
+**NOTE: Some cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
 
 
-![LightDash](https://user-images.githubusercontent.com/54859942/134824129-26653897-72fc-493c-a200-f5dcb984680a.png)
-
+![image](https://user-images.githubusercontent.com/54859942/134826452-1201f2a3-4829-4ebc-a880-efb7139be289.png)
 
 
 
@@ -45,21 +44,12 @@ JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2
   | Swipe Card | [link](https://github.com/bramkragten/swipe-card) | Theme | [link](https://github.com/basnijholt/lovelace-ios-themes) |
   | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
   | Kiosk Mode | [link](https://github.com/maykar/kiosk-mode) | Hue Icons | [link](https://github.com/arallsopp/hass-hue-icons)
- 
-<details>
-  <summary>Wall Mounted Tablet</summary>
+  | Uptime Card | [link](https://github.com/dylandoamaral/uptime-card) | Simple Thermostat | [link](https://github.com/nervetattoo/simple-thermostat)
   
-  I have a Kindle Fire 10 (2019) mounted to the wall with a few command strips, and it works beautifully! I initially used FullyKiosk to isolate Home Assistant, however it can only access a really old version of Android WebView which made it really slow and unresponsive. I was shocked when I tried WallPanel and it works almost flawlessly! I know leaving the Kindle plugged in 24/7 is really bad for the battery but :shrug:
- ![IMG_2713](https://user-images.githubusercontent.com/54859942/132931199-e96f00c3-869d-463b-91e6-b6e130540f9a.JPG)
 
-
-</details>
-
-# Theme
-  
-  You probably recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
- ##### Optional: The font I'm using is [DM Sans](https://fonts.google.com/specimen/DM+Sans) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
-
+# Quick Glances
+I have quick glance cards that are using Browser Mod's popup functionality to show sensor data, house climate, cameras, and some settings!
+![ok](https://github.com/crixle/homeassistant-config/blob/main/ok.gif)
 
 
 # Light Control Card
@@ -85,7 +75,7 @@ cards:
         buttons:
           - entity: group.boudoir
             name: false
-            icon: hass:sofa-single
+            icon: hue:room-lounge
             style:
               button:
                 background: rgba(255,255,255,.1)
@@ -120,7 +110,7 @@ cards:
               action: toggle
           - entity: group.bedroom
             name: false
-            icon: hass:bed-king
+            icon: hue:room-bedroom
             style:
               button:
                 background: rgba(255,255,255,.1)
@@ -147,7 +137,7 @@ cards:
               action: toggle
           - entity: group.office
             name: false
-            icon: hass:laptop
+            icon: hue:room-office
             style:
               button:
                 background: rgba(255,255,255,.1)
@@ -203,6 +193,14 @@ cards:
       grid-area: orbs
       place-self: end stretch
   - type: entities
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 35px;
+        }
+        div#states.card-content {
+          padding: 10px;
+        }
     entities:
       - type: custom:state-switch
         entity: hash
@@ -213,9 +211,11 @@ cards:
             card:
               type: custom:auto-entities
               card:
-                type: grid
-                square: false
-                columns: 3
+                type: custom:layout-card
+                layout_type: grid
+                layout:
+                  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
+                  grid-auto-rows: 1fr
               filter:
                 include:
                   - domain: light
@@ -240,33 +240,31 @@ cards:
                   - entity_id: media_player.boudoir_tv_2
                     options:
                       type: custom:button-card
+                      entity: media_player.boudoir_tv_2
                       tap_action:
                         action: more-info
+                      hold_action:
+                        action: toggle
                       template:
                         - grid_card
                         - tv
-                  - entity_id: switch.air_purifier
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                      state:
-                        - value: 'on'
-                          spin: true
                 exclude:
                   - entity_id: light.ceiling_1
                   - entity_id: light.ceiling_2
                   - entity_id: light.hue_play_1
                   - entity_id: light.hue_play_1_2
+                  - entity_id: light.gradient_strip
               card_param: cards
           bedroom:
             type: custom:mod-card
             card:
               type: custom:auto-entities
               card:
-                type: grid
-                square: false
-                columns: 3
+                type: custom:layout-card
+                layout_type: grid
+                layout:
+                  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
+                  grid-auto-rows: 1fr
               filter:
                 include:
                   - domain: light
@@ -300,13 +298,15 @@ cards:
             card:
               type: custom:auto-entities
               card:
-                type: grid
-                square: false
-                columns: 3
+                type: custom:layout-card
+                layout_type: grid
+                layout:
+                  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
+                  grid-auto-rows: 1fr
               filter:
                 include:
                   - domain: light
-                    area: Crixle's Room
+                    area: Office
                     options:
                       type: custom:button-card
                       template:
@@ -340,7 +340,11 @@ cards:
           downstairs:
             type: custom:mod-card
             card:
-              type: grid
+              type: custom:layout-card
+              layout_type: grid
+              layout:
+                grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
+                grid-auto-rows: 1fr
               cards:
                 - type: custom:button-card
                   entity: group.kitchen
@@ -356,17 +360,16 @@ cards:
                     - grid_card
                 - type: custom:button-card
                   entity: media_player.kitchen_sonos
+                  tap_action:
+                    action: more-info
                   template:
                     - grid_card
                     - tv
+    show_header_toggle: false
     view_layout:
       grid-area: control
       place-self: start stretch
-    card_mod:
-      style: |
-        ha-card {
-          border-radius: 30px;
-        }
+
 
   ```
 </details>
@@ -1012,6 +1015,17 @@ cards:
   ```
 
 </details>
+
+# Theme
+  
+  You probably recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
+ ##### Optional: The font I'm using is [DM Sans](https://fonts.google.com/specimen/DM+Sans) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
+ 
+
+# Wall Mounted Tablet
+  
+  I have a Kindle Fire 10 (2019) mounted to the wall with a few command strips, and it works beautifully! I initially used FullyKiosk to isolate Home Assistant, however it can only access a really old version of Android WebView which made it really slow and unresponsive. I was shocked when I tried WallPanel and it works almost flawlessly! I know leaving the Kindle plugged in 24/7 is really bad for the battery but :shrug:
+ ![IMG_2713](https://user-images.githubusercontent.com/54859942/132931199-e96f00c3-869d-463b-91e6-b6e130540f9a.JPG)
 
 # Useful Automations
 
