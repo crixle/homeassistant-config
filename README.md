@@ -46,14 +46,6 @@ JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2
   | Paper Buttons | [link](https://github.com/jcwillox/lovelace-paper-buttons-row) | Layout Card | [link](https://github.com/thomasloven/lovelace-layout-card) |
   | Kiosk Mode | [link](https://github.com/maykar/kiosk-mode) | Hue Icons | [link](https://github.com/arallsopp/hass-hue-icons)
  
-
-
-<details>
-  <summary>Dark Mode </summary>
-  
-  ![DarkDash](https://user-images.githubusercontent.com/54859942/132930231-127aca01-695a-44e3-8608-d935f75408b8.png)
-
-</details>
 <details>
   <summary>Wall Mounted Tablet</summary>
   
