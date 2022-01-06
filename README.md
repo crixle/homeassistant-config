@@ -63,7 +63,7 @@ Each room card is based off a [group](https://www.home-assistant.io/integrations
 ##### ! For fans and media players, they are using a button-card template which can be found up in the files. 
 
 <details>
-  <summary>Card Code</summary>
+  <summary>Card Code (use in vertical-stack)</summary>
   
 ```
 type: custom:button-card
