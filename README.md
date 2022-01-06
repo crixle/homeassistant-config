@@ -1,10 +1,13 @@
+
+
 # Crixle's Dashboard
 I've always loved HomeKit, but it lacks functionality and integration with many of my devices so I created this dashboard to give off iOS vibes but gives me the versatility my smart home needs. </br>
 </br>
 **NOTE: Some cards have their code provided allowing simple copy and pasting into your own dash, however most require button templates provides in the rep files. As always, replace my entities with yours otherwise cards won't work.**
 
 
-![image](https://user-images.githubusercontent.com/54859942/134826452-1201f2a3-4829-4ebc-a880-efb7139be289.png)
+![Screenshot 2022-01-02 103557](https://user-images.githubusercontent.com/54859942/148412043-ec17e2d0-6dfa-4c91-8111-65b64a6ffe62.png)
+
 
 
 
@@ -14,19 +17,20 @@ I've always loved HomeKit, but it lacks functionality and integration with many 
 - [Dynamic Floor Plan](#floor-plan)
 - Arlo Pro 3 camera control/library access
 - [Automatic light/dark mode](#useful-automations)
-- [Media & Sync Box Control](#media-card)
-- Room tracking for automations using [RoomAssistant](https://www.room-assistant.io/)
 
-Hardware | Quantity | Find
+Home Assistant Hardware| Quantity | Find
 -------- | -------- | ------
 Raspberry Pi 4B 4GB | 1 | link
 Samsung 500GB SSD via USB | 1 | [link](https://www.bestbuy.com/site/samsung-t7-500gb-external-usb-3-2-gen-2-portable-solid-state-drive-with-hardware-encryption-indigo-blue/6408298.p?skuId=6408298)
 HUSBZB USB Hub (Zigbee & Z-Wave) |1 | [link](https://www.amazon.com/gp/product/B01GJ826F8/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
-Philips Hue A19 Bulbs + Hub (1) | 26 | [link](https://www.bestbuy.com/site/philips-hue-white-and-color-ambiance-a19-bluetooth-75w-smart-led-starter-kit/6472224.p?skuId=6472224)
+Philips Hue A19 Bulbs + Hub (1) | 26ish | [link](https://www.bestbuy.com/site/philips-hue-white-and-color-ambiance-a19-bluetooth-75w-smart-led-starter-kit/6472224.p?skuId=6472224)
 Budget Friendly Zigbee Bulbs (Temp Only) | 6 | [link](https://www.homedepot.com/p/EcoSmart-60-Watt-Equivalent-A19-Dimmable-SMART-LED-Light-Bulb-Tunable-White-2-Pack-A9A19A60WESDZ02/309683612)
-Amazon HD Fire 10 (2019) w/ [WallPanel](https://play.google.com/store/apps/details?id=com.thanksmister.iot.wallpanel&hl=en_US&gl=US) | 1 | 
+Amazon HD Fire 10 (2019) w/ [WallPanel](https://play.google.com/store/apps/details?id=com.thanksmister.iot.wallpanel&hl=en_US&gl=US) | 1 |
+
+Devices | Quantity | Find
+-------- | -------- | ------ 
 Aqara Sensors (Motion, Temp/Hum) | 3 | [link](https://www.aqara.com/us/home.html)
-Philips Motion Sensor with ambient temperature | 3 | [link](https://www.bestbuy.com/site/philips-hue-motion-sensor-white/5540102.p?skuId=5540102)
+Philips Motion Sensor | 3 | [link](https://www.bestbuy.com/site/philips-hue-motion-sensor-white/5540102.p?skuId=5540102)
 Philips Sync Box | 1 | [link](https://www.bestbuy.com/site/philips-hue-play-hdmi-sync-box-black/6371722.p?skuId=6371722)
 Philips 55" Gradient Strip | 1 | [link](https://www.bestbuy.com/site/philips-hue-play-gradient-lightstrip-55/6427737.p?skuId=6427737)
 JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2GP/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
@@ -47,495 +51,151 @@ JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2
   | Uptime Card | [link](https://github.com/dylandoamaral/uptime-card) | Simple Thermostat | [link](https://github.com/nervetattoo/simple-thermostat)
   
 
-# Quick Glances
-I have quick glance cards that are using Browser Mod's popup functionality to show sensor data, house climate, cameras, and some settings!
-![ok](https://github.com/crixle/homeassistant-config/blob/main/ok.gif)
 
 
-# Light Control Card
+# Room Tabs
   
-  Control multiple lights and devices per room all while in one card! If the globe for a room is glowing, then that means lights are on in that room. Holding down on the globe will toggle them. Achieved by grouping the lights by rooms into grids, then using a state-switch card based off of the URL hash. Open the link above for more info.
+  I've retired my old method of room control, which was a [state-switch card](https://github.com/thomasloven/lovelace-state-switch) with all the lights organized by room. Due to it's instability and performance issues, I've created room tabs! Room tabs show me what I need to know about the rooms at a glance but let me change the lights and the TV when I click on it.
  
-  ![Lights](https://user-images.githubusercontent.com/54859942/132930244-e507add3-2313-4adf-bafd-ea6ed2581dff.gif)
+![RoomTabs](https://user-images.githubusercontent.com/54859942/148406102-01ded048-724e-467f-9da5-106450363cfc.gif)
+Each room card is based off a [group](https://www.home-assistant.io/integrations/group/) that automatically populates on boot or when I tell it to. See [auto-populating groups](#auto-populating-groups) for more info!
+
+##### ! For fans and media players, they are using a button-card template which can be found up in the files. 
 
 <details>
-  <summary>Code</summary>
+  <summary>Card Code</summary>
   
 ```
-type: vertical-stack
-cards:
-  - type: entities
-    style: |
-      ha-card {
-        background: none;
-        box-shadow: none;
-        }
-    entities:
-      - type: custom:paper-buttons-row
-        buttons:
-          - entity: group.boudoir
-            name: false
-            icon: hue:room-lounge
-            style:
-              button:
-                background: rgba(255,255,255,.1)
-                box-shadow: >
-                  {% if is_state('group.boudoir', 'on') %}
+type: custom:button-card
+show_label: true
+label: |
+  [[[
+    return states['sensor.boudoir_lights_on'].state + " lights on"
+  ]]]
+name: |
+  [[[
+    return states['group.boudoir_lights'].attributes.friendly_name + " " +
+    `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
+    ${Math.round(states['sensor.boudoir_temperature'].state)}°F
+    </span>`
+  ]]]
+entity: group.boudoir_lights
+tap_action:
+  haptic: medium
+  action: more-info
+hold_action:
+  action: more-info
+show_state: false
+state:
+  - value: 'off'
+    styles:
+      icon:
+        - filter: grayscale(100%) opacity(50%)
+      name:
+        - filter: grayscale(100%) opacity(50%)
+      label:
+        - filter: grayscale(100%) opacity(50%)
+styles:
+  card:
+    - padding: 5px
+  icon:
+    - width: 60px
+    - transition: filter 1s
+    - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
+  img_cell:
+    - width: 60px !important
+  label:
+    - place-self: start
+    - font-size: 20px
+    - overflow: visible
+  name:
+    - place-self: end
+    - justify-self: start
+    - font-size: 20px
+    - overflow: visible
+  grid:
+    - grid-template-columns: 17% 80px repeat(4, 1fr)
+    - grid-template-rows: 1fr 1fr
+    - grid-template-areas: |
+        "i n n wid1 wid2 lights"
+        "i l l wid1 wid2 lights"
+  custom_fields:
+    temp:
+      - place-self: center
+      - font-size: 18px
+      - background: rgba(255,255,255,.1)
+      - padding: 1px 3px
+      - border-radius: 15px
+      - mix-blend-mode: difference
+custom_fields:
+  wid1:
+    card:
+      type: custom:button-card
+      entity: switch.air_purifier
+      template: room_card_fan
+  wid2:
+    card:
+      type: custom:button-card
+      entity: media_player.boudoir_system
+      template: room_card_media
+  lights:
+    card:
+      type: custom:button-card
+      show_state: true
+      entity: group.boudoir_lights
+      icon: mdi:lamps
+      state:
+        - value: 'off'
+          styles:
+            icon:
+              - filter: grayscale(100%) opacity(50%)
+            state:
+              - filter: grayscale(100%) opacity(50%)
+      show_name: false
+      styles:
+        card:
+          - background: none
+          - box-shadow: none
+          - border-radius: 0
+        icon:
+          - width: 40px
+          - transition: filter 1s
 
-                  0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px
-                  rgba(255,255,255,.5)
 
-                  {% else %}
-                    0px 8px 15px rgba(0, 0, 0, 0.2);
-                  {% endif %}
-                border-radius: 50px
-                padding: 20px
-                color: |
-                  {% if is_state('group.boudoir', 'on') %}
-                    white
-                  {% else %}
-                    rgba(0,0,0,.5)
-                  {% endif %}
-              icon:
-                '--mdc-icon-size': 40px
-            state_styles:
-              '#boudoir':
-                button:
-                  background: rgba(255,255,255,.5)
-                  box-shadow: 0 0 15px rgba(255,255,255,.6)
-            tap_action:
-              action: navigate
-              navigation_path: '#boudoir'
-            hold_action:
-              action: toggle
-          - entity: group.bedroom
-            name: false
-            icon: hue:room-bedroom
-            style:
-              button:
-                background: rgba(255,255,255,.1)
-                border-radius: 50px
-                padding: 20px
-                box-shadow: |
-                  {% if is_state('group.bedroom', 'on') %}
-                   0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
-                  {% else %}
-                    0px 8px 15px rgba(0, 0, 0, 0.2);
-                  {% endif %}
-                color: |
-                  {% if is_state('group.bedroom', 'on') %}
-                    white
-                  {% else %}
-                    rgba(0,0,0,.5)
-                  {% endif %}
-              icon:
-                '--mdc-icon-size': 40px
-            tap_action:
-              action: navigate
-              navigation_path: '#bedroom'
-            hold_action:
-              action: toggle
-          - entity: group.office
-            name: false
-            icon: hue:room-office
-            style:
-              button:
-                background: rgba(255,255,255,.1)
-                border-radius: 50px
-                padding: 20px
-                box-shadow: |
-                  {% if is_state('group.office', 'on') %}
-                    0px 8px 15px rgba(0, 0, 0, 0.2),inset 0 0 10px rgba(255,255,255,.5)
-                  {% else %}
-                    0px 8px 15px rgba(0, 0, 0, 0.2);
-                  {% endif %}
-                color: |
-                  {% if is_state('group.office', 'on') %}
-                    white
-                  {% else %}
-                    rgba(0,0,0,.5)
-                  {% endif %}
-              icon:
-                '--mdc-icon-size': 40px
-            tap_action:
-              action: navigate
-              navigation_path: '#office'
-            hold_action:
-              action: toggle
-          - entity: group.kitchen
-            name: false
-            icon: hass:stairs-down
-            style:
-              button:
-                background: rgba(255,255,255,.1)
-                border-radius: 50px
-                padding: 20px
-                box-shadow: |
-                  {% if is_state('group.kitchen', 'on') %}
-                   0px 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255,255,255,.5)
-                  {% else %}
-                    0px 8px 15px rgba(0, 0, 0, 0.2);
-                  {% endif %}
-                color: |
-                  {% if is_state('group.kitchen', 'on') %}
-                    white
-                  {% else %}
-                    rgba(0,0,0,.5)
-                  {% endif %}
-              icon:
-                '--mdc-icon-size': 40px
-            tap_action:
-              action: navigate
-              navigation_path: '#downstairs'
-            hold_action:
-              action: toggle
-    view_layout:
-      grid-area: orbs
-      place-self: end stretch
-  - type: entities
-    card_mod:
-      style: |
-        ha-card {
-          border-radius: 35px;
-        }
-        div#states.card-content {
-          padding: 10px;
-        }
-    entities:
-      - type: custom:state-switch
-        entity: hash
-        default: boudoir
-        states:
-          boudoir:
-            type: custom:mod-card
-            card:
-              type: custom:auto-entities
-              card:
-                type: custom:layout-card
-                layout_type: grid
-                layout:
-                  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
-                  grid-auto-rows: 1fr
-              filter:
-                include:
-                  - domain: light
-                    area: Boudoir
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - light
-                  - entity_id: light.boudoir_ceiling_light
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - light
-                  - entity_id: light.tv_bars
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - light
-                  - entity_id: media_player.boudoir_tv_2
-                    options:
-                      type: custom:button-card
-                      entity: media_player.boudoir_tv_2
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                      template:
-                        - grid_card
-                        - tv
-                exclude:
-                  - entity_id: light.ceiling_1
-                  - entity_id: light.ceiling_2
-                  - entity_id: light.hue_play_1
-                  - entity_id: light.hue_play_1_2
-                  - entity_id: light.gradient_strip
-              card_param: cards
-          bedroom:
-            type: custom:mod-card
-            card:
-              type: custom:auto-entities
-              card:
-                type: custom:layout-card
-                layout_type: grid
-                layout:
-                  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
-                  grid-auto-rows: 1fr
-              filter:
-                include:
-                  - domain: light
-                    area: Bedroom
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - light
-                  - entity_id: media_player.bedroom_tv
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - tv
-                      tap_action:
-                        action: more-info
-                  - entity_id: switch.bedroom_ac
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                exclude:
-                  - entity_id: light.ceiling_1
-                  - entity_id: light.ceiling_2
-                  - entity_id: light.hue_play_1
-                  - entity_id: light.hue_play_1_2
-              card_param: cards
-          office:
-            type: custom:mod-card
-            card:
-              type: custom:auto-entities
-              card:
-                type: custom:layout-card
-                layout_type: grid
-                layout:
-                  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
-                  grid-auto-rows: 1fr
-              filter:
-                include:
-                  - domain: light
-                    area: Office
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - light
-                  - entity_id: media_player.office_speaker
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                        - tv
-                      tap_action:
-                        action: more-info
-                  - entity_id: switch.clem
-                    options:
-                      type: custom:button-card
-                      template:
-                        - grid_card
-                      lock:
-                        enabled: true
-                exclude:
-                  - entity_id: light.ceiling_1
-                  - entity_id: light.ceiling_2
-                  - entity_id: light.hue_play_1
-                  - entity_id: light.hue_play_1_2
-              card_param: cards
-              sort:
-                method: domain
-                reverse: false
-                numeric: false
-          downstairs:
-            type: custom:mod-card
-            card:
-              type: custom:layout-card
-              layout_type: grid
-              layout:
-                grid-template-columns: repeat(auto-fit, minmax(125px, 1fr))
-                grid-auto-rows: 1fr
-              cards:
-                - type: custom:button-card
-                  entity: group.kitchen
-                  template:
-                    - grid_card
-                - type: custom:button-card
-                  entity: group.livingroom
-                  template:
-                    - grid_card
-                - type: custom:button-card
-                  entity: vacuum.rug_b
-                  template:
-                    - grid_card
-                - type: custom:button-card
-                  entity: media_player.kitchen_sonos
-                  tap_action:
-                    action: more-info
-                  template:
-                    - grid_card
-                    - tv
-    show_header_toggle: false
-    view_layout:
-      grid-area: control
-      place-self: start stretch
+
+  ```
+</details>
+<details>
+  <summary>Lights On Sensors (configuration.yaml)</summary>
+  
+```
+sensor:                                                
+  - platform: template
+    sensors:
+      kitchen_lights_on:
+        value_template: "{{ states.light | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | map('area_name')| select('in', ['Kitchen'])| list | count}}"
+      livingroom_lights_on:
+        value_template: "{{ states.light | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | map('area_name')| select('in', ['Living Room'])| list | count}}"
+      office_lights_on:
+        value_template: "{{ states.light | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | map('area_name')| select('in', ['Office'])| list | count}}"
+      bedroom_lights_on:
+        value_template: "{{ states.light | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | map('area_name')| select('in', ['Bedroom'])| list | count}}"
+      boudoir_lights_on:
+
 
 
   ```
 </details>
 
 
-# Media Card
-  This card pops up when I select the main TV, and allows me to skip content and adjust volume. Below that allows me to control our Philips Sync Box and change the entertainment 
- zones right blow it. I recently added a remote too for simple ADB commands!
-                     
-  ![Media](https://user-images.githubusercontent.com/54859942/132930473-da620641-11dc-4cf0-95d3-e256d638f508.png)
-<details>
-  <summary>Code</summary>
-                     
-  ```
-  media_player.boudoir_tv_2:  ### Must be put into lovelace-ui file with appropriate entities
-    title: TV Controls
-    card:
-      type: entities
-      entities:
-        - type: custom:mini-media-player
-          entity: media_player.boudoir_tv_2
-          volume_stateless: true
-          card_mod:
-            style: |
-              ha-card {
-                box-shadow: none;
-              }
-        - type: custom:mini-media-player
-          entity: media_player.sync_box
-          hide:
-            controls: true
-            power: true
-            source: true
-          card_mod:
-            style: |
-              ha-card {
-                box-shadow: none;
-              }
-        - type: custom:mod-card
-          card:
-            type: grid
-            cards:
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxtogglevideomode
-                layout: vertical
-                show_name: false
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxtogglemusicmode
-                layout: vertical
-                show_name: false
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxtogglegamemode
-                layout: vertical
-                show_name: false
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxdecrease
-                layout: vertical
-                show_name: false
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxtoggle
-                layout: vertical
-                show_name: false
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxintensityincrease
-                layout: vertical
-                show_name: false
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxstriponly
-                show_icon: false
-                name: Strip Only
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxstripbars
-                show_icon: false
-                name: Strip + Bars
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-              - type: custom:button-card
-                tap_action:
-                  action: toggle
-                entity: script.syncboxalllights
-                show_icon: false
-                name: All Lights
-                template: scene
-                styles:
-                  card:
-                    - box-shadow: >-
-                        rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px
-                        3px 6px
-            square: false
-      card_mod:
-        style: |
-          ha-card {
-            font-family: DM Sans;
-            box-shadow: none;
-          }
-  ```
-</details>        
+
                      
 # Floor Plan
   
   This card is my favorite because it's informative and let's me look at the entire house in a glance. Best part is that it was relatively easy to make with a bit of patience. I followed [this guide](https://community.home-assistant.io/t/floorplan-ui-with-color-synced-lights/169417) and had it working within a couple hours. The guide allows you to sync the color to match color and brightness, but I had issues with color matching not being accurate so I just match brightness.
   ![floorplan](https://user-images.githubusercontent.com/54859942/120511145-1e8e0000-c398-11eb-93af-11c22549a6e9.gif)
+##### This code is very complex, and will not work on your dash by copying and pasting. Because it's using JavaScript to work, if any of the entities are incorrect it will just crash and not load anything. Use my code as a reference to yours.
 <details>
-
   <summary>Code</summary>
   
    ```
@@ -1016,10 +676,87 @@ cards:
 
 </details>
 
+# Auto-Populating Groups
+So, picture this. You just replaced a Hue bulb in your bedroom and now you need to go update it in Home Assistant. You've done that and all is well again, until you go to bed.
+In your excitement, you didn't add the new bulb to the correct room in Google Home. So when you say, "Hey Google, turn off the lights", it turns them all off except the new one.
+Now, you have to get up and MANUALLY turn off that light like a CAVEMAN and dump your sorry ass back into bed. So to prevent that from happening again, I created this script.
+
+When I add/replace lights in my home, it's incredibly annoying to have to go modify Home Assistant, HomeKit, and Google Assistant when I really only use HK and GA for turning lights on and off. So, my solution was to create groups that automatically create themselves based off areas with a simple script. All I have to do is setup the device in HA then add it to the appropriate area and the rest is automatic. Only the 'group' entities are exposed to GA and HK so that when I say "turn off the lights", it turns off the lights based off the Home Assistant area. 
+The script is ran everytime Home Assistant starts or if I manually call it. 
+<details>
+  <summary>Code</summary>
+  
+```
+alias: Sync Areas to Light Groups
+description: Gets entities within all areas and creates auto-populating groups
+trigger:
+  - platform: homeassistant
+    event: start
+condition: []
+action:
+  - service: group.set
+    data:
+      object_id: boudoir_lights
+      name: Boudoir
+      icon: hue:room-lounge
+      entities: |
+        {{ 
+          expand(states.light) 
+          |selectattr('entity_id', 'in', area_entities('Boudoir'))
+          |map(attribute='entity_id')
+          |list
+        }}
+  - service: group.set
+    data:
+      object_id: bedroom_lights
+      name: Bedroom
+      icon: hue:room-bedroom
+      entities: |
+        {{ 
+          expand(states.light) 
+          |selectattr('entity_id', 'in', area_entities('Bedroom'))
+          |map(attribute='entity_id')
+          |list
+        }}
+  - service: group.set
+    data:
+      object_id: office_lights
+      name: Office
+      icon: hue:room-office
+      entities: |
+        {{ 
+          expand(states.light) 
+          |selectattr('entity_id', 'in', area_entities('Office'))
+          |map(attribute='entity_id')
+          |list
+        }}
+  - service: group.set
+    data:
+      object_id: living_room_lights
+      name: Living Room
+      icon: mdi:sofa
+      entities: |
+        {{ 
+          expand(states.light) 
+          |selectattr('entity_id', 'in', area_entities('Living Room'))
+          |map(attribute='entity_id')
+          |list
+        }}
+  - service: browser_mod.toast
+    data:
+      message: Successfully refreshed light groups!
+mode: single
+
+
+
+
+  ```
+</details>
+
 # Theme
   
-  You probably recognized my light mode theme, probably because it's one of the [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! Both the background and the code is provided in the files!
- ##### Optional: The font I'm using is [DM Sans](https://fonts.google.com/specimen/DM+Sans) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
+  My light theme is heavily built upon [ios dark mode themes](https://github.com/basnijholt/lovelace-ios-dark-mode-theme) with some tweaks and a custom background made by me! I recently got a new laptop with an OLED screen so I've fully embraced the dark side with my dark theme. Both the background and the code is provided in the files!
+ ##### Optional: The font I'm using is [Outfit](https://fonts.google.com/specimen/Outfit) and you have to import that into your dashboard resources! Check out [this guide](https://community.home-assistant.io/t/adding-resources-to-lovelace/180729) and look at the 2nd post for reference!
  
 
 # Wall Mounted Tablet
