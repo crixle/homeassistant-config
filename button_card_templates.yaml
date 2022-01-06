@@ -7,86 +7,125 @@ you have to import this file!
 
 ###################################################
 button_card_templates:
-### Default Card For all tiles ###
-  grid_card:
-    show_state: true
-    aspect_ratio: 1/1
+### Used in the bottom left for toggles
+  overlay_card:
+    variables:
+      background: var(--ha-card-background)
     tap_action:
-      haptic: light
-      action: toggle
+      action: more-info
+    layout: icon_name
     styles:
       card:
+        - padding: 5px 0px
+        - background: var(--overlay-card)
+      img_cell:
+        - overflow: visible
+      name:
+        - font-weight: bold
+        - justify-self: start
+        - font-size: 20px
+      icon:
+        - color: white
+        - width: 40px
+        - padding: 3px
+        - background: '[[[ return variables.background ]]]'
+        - border-radius: 50%
+        - height: 40px
         - box-shadow: >-
             rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
             7px -3px
-      grid:
-        - grid-template-areas: |
-            " i . " " n n " " s l "
+### Top middle cards for scenes
+  scene_card:
+    variables:
+      color: rgb(210,210,210)
+    template: scene
+    styles:
+      card:
+        - height: 120px
       img_cell:
-        - align-self: start
-        - text-align: start
-        - display: inline-block
-        - padding-left: 10px
+        - overflow: visible
       name:
-        - justify-self: start
-        - padding-left: 10px
-        - font-weight: bold
-      state:
-        - justify-self: start
-        - padding-left: 10px
+        - font-size: 20px
+      icon:
+        - color: '#464A47'
+        - width: 50px
+        - padding: 3px
+        - background: '[[[ return variables.color ]]]'
+        - border-radius: 50%
+        - height: 50px
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+            
+### Embedded in the room tabs for fans to make them spin
+  room_card_fan:
+    icon: mdi:fan
+    hold_action:
+      action: more-info
+    show_name: false
+    styles:
+      card:
+        - background: none
+        - box-shadow: none
+      icon:
+        - width: 40px
+    state:
+      - value: 'on'
+        spin: true
+      - value: 'off'
+        styles:
+          card:
+            - filter: grayscale(100%) opacity(50%)
+            
+### Embedded in room tab so it blinks when on.
+  room_card_vacuum:
+    show_entity_picture: true
+    show_name: false
+    show_state: true
+    styles:
+      card:
+        - background: none
+        - box-shadow: none
+        - overflow: visible
+      icon:
+        - width: 40px
+        - color: '#7303fc'
+    state:
+      - value: docked
+        styles:
+          card:
+            - filter: grayscale(50%) opacity(50%)
+      - value: cleaning
+        styles:
+          icon:
+            - animation: blink 2s ease infinite
+### Embedded in room tab for TVs and other players
+  room_card_media:
+    show_entity_picture: false
+    show_name: false
+    show_state: true
+    styles:
+      card:
+        - background: none
+        - box-shadow: none
+        - overflow: visible
+      icon:
+        - width: 40px
     state:
       - value: 'off'
         styles:
           card:
-            - filter: opacity(50%)
-          icon:
-            - filter: grayscale(100%)
-            
-### Used in conjunction with "grid_card" to have it change appearence if it's "cleaning" opposed to the default on/off ###
-  roomba:
-    type: custom:button-card
-    template:
-      - grid_card
-    tap_action:
-      action: more-info
-    state:
-      - value: cleaning
+            - filter: grayscale(100%) opacity(50%)
+      - value: playing
         styles:
-          state:
-            - color: green
-            - animation: blink 2s ease infinite
           icon:
-            - color: green
-            - animation: vibrate-slow 1s ease infinite
-    extra_styles: |
-      @keyframes vibrate-slow {
-        0%{
-          -webkit-transform: translate(0);
-          transform: translate(0);
-        }
-        20%{
-          -webkit-transform: translate(2px,-2px);
-          transform: translate(2px,-2px);
-        }
-        40%{
-          -webkit-transform: translate(2px,2px);
-          transform: translate(2px,2px);
-        }
-        60%{
-          -webkit-transform: translate(-2px,2px);
-          transform: translate(-2px,2px);
-        }
-        80%{
-          -webkit-transform: translate(-2px,-2px);
-          transform: translate(-2px,-2px);
-        }
-        100%{
-          -webkit-transform: translate(0);
-          transform: translate(0);
-        }
-        
-### Toggles cameras on/off below video grid ###
-  camera_button: 
+            - color: '#7303fc'
+      - value: 'on'
+        styles:
+          icon:
+            - color: '#7303fc'
+### Used within the camera popup
+  camera_button:
     show_state: true
     layout: icon_name_state2nd
     tap_action:
@@ -108,6 +147,45 @@ button_card_templates:
             - filter: grayscale(100%)
     confirmation:
       text: Are you sure?
+### Default display cards for popups
+  grid_card:
+    show_state: true
+    show_label: true
+    aspect_ratio: 1/1
+    tap_action:
+      haptic: light
+      action: toggle
+    styles:
+      card:
+        - box-shadow: >-
+            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
+            7px -3px
+      grid:
+        - grid-template-columns: repeat(2, 50%)
+        - grid-template-areas: |
+            " i . " " n n " " s l "
+      icon:
+        - width: 80%
+      img_cell:
+        - align-self: start
+        - text-align: start
+        - display: inline-block
+        - padding-left: 10px
+      name:
+        - justify-self: start
+        - padding-left: 10px
+        - font-weight: bold
+      state:
+        - justify-self: start
+        - padding-left: 10px
+    state:
+      - value: 'off'
+        styles:
+          card:
+            - filter: opacity(50%)
+          icon:
+            - filter: grayscale(100%)
+### Used in conjunction with "grid_card" to make it have the correct popup
   light:
     template: popup
     state:
@@ -115,29 +193,7 @@ button_card_templates:
         styles:
           icon:
             - color: var(--button-card-light-color)
-### Used in conjunction with "grid_card" to have icon spin when the state is "on" ###
-  spin_animation:
-    state:
-      - value: 'on'
-        styles:
-          icon:
-            - animation: spin 1s ease linear
-    extra_styles: |
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(-360deg);
-        }
-      }
-  hover:
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-      }
-      
-### Buttons for lights in the floor plan ###
+### Used in the floor plan to control lights
   floorbutton:
     aspect_ratio: 1/1
     show_name: false
@@ -162,8 +218,6 @@ button_card_templates:
         - height: 4em
         - width: 4em
         - margin: 4px
-        
-### Any entity with this template will have a HomeKit looking slider for color/brightness ###
   popup:
     hold_action:
       action: fire-dom-event
@@ -265,36 +319,12 @@ button_card_templates:
                         persist_features: true
                         consolidate_entities: false
                   template: color_light
-  bar_button:
-    layout: icon_name
-    styles:
-      icon:
-        - width: 40px
-      name:
-        - font-size: 20px
-      card:
-        - border-radius: 15px
-        - font-family: DM Sans
-        - box-shadow: >-
-            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
-            7px -3px
-        - font-weight: bold
-        - margin: 0px
   scene:
-    layout: icon_name
-    styles:
-      icon:
-        - width: 40px
-      name:
-        - font-size: 20px
-      card:
-        - border-radius: 15px
-        - font-family: DM Sans
-        - box-shadow: >-
-            rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px
-            7px -3px
-        - font-weight: bold
-        - margin: 0px
+    state:
+      - value: 'on'
+        styles:
+          icon:
+            - color: var(--accent-color)
     tap_action:
       action: call-service
       service: scene.turn_on
@@ -304,31 +334,17 @@ button_card_templates:
         transition: 3
     hold_action:
       action: more-info
-    extra_styles: |
-      ha-card:hover {
-        transform: scale(1.05);
-        }
-  tv:
-    aspect_ratio: 1/1
+  player:
+    tap_action:
+      action: more-info
+    double_tap_action:
+      action: toggle
+    show_state: true
     state:
       - value: playing
         styles:
+          icon:
+            - color: rgb(100,100,255)
           state:
+            - color: rgb(100,100,255)
             - animation: blink 2s ease infinite
-            - color: rgb(100,100,255)
-          icon:
-            - color: rgb(100,100,255)
-  ac:
-    state:
-      - value: cool
-        styles:
-          icon:
-            - color: rgb(1, 182, 253)
-### Used for "grid_card" when the entity doesn't change color. So basically just adds a visual indicator when the entity is on. ###
-  light-alt:
-    state:
-      - value: 'on'
-        styles:
-          icon:
-            - color: var(--accent-color)
-
