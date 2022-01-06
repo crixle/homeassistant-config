@@ -60,6 +60,9 @@ JHome Zigbee Smart Plugs | 4 | [link](https://www.amazon.com/gp/product/B08K7FY2
 ![RoomTabs](https://user-images.githubusercontent.com/54859942/148406102-01ded048-724e-467f-9da5-106450363cfc.gif)
 Each room card is based off a [group](https://www.home-assistant.io/integrations/group/) that automatically populates on boot or when I tell it to. See [auto-populating groups](#auto-populating-groups) for more info!
 
+![RoomTabPopup](https://user-images.githubusercontent.com/54859942/148413959-ef7da284-0e72-4492-aa83-308575e6d032.gif)
+
+
 ##### ! For fans and media players, they are using a button-card template which can be found up in the files. 
 
 <details>
