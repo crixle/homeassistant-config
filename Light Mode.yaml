@@ -11,7 +11,7 @@ Custom Light Mode:
   # Custom Variables
   overlay-card: var(--ha-card-background)
   # Text
-  paper-font-common-base_-_font-family: "DM Sans"
+  paper-font-common-base_-_font-family: "Outfit"
   primary-text-color: "#464a47"
   secondary-text-color: "#000000"
   text-primary-color: "#FFF"
