@@ -767,35 +767,9 @@ mode: single
   I have a Kindle Fire 10 (2019) mounted to the wall with a few command strips, and it works beautifully! I initially used FullyKiosk to isolate Home Assistant, however it can only access a really old version of Android WebView which made it really slow and unresponsive. I was shocked when I tried WallPanel and it works almost flawlessly! I know leaving the Kindle plugged in 24/7 is really bad for the battery but :shrug:
  ![IMG_2713](https://user-images.githubusercontent.com/54859942/132931199-e96f00c3-869d-463b-91e6-b6e130540f9a.JPG)
 
-# Useful Automations
+# Motion Lights Automation
 
   ### Make sure you understand the code and modify as necessary!
-  <details>
-  	<summary>Automatic Dark Mode</summary>
-  
-  ```
-  alias: Auto Lovelace Theme
-    description: ''
-    trigger:
-      - platform: sun
-        event: sunrise
-        offset: '00:10:00'
-      - platform: sun
-        event: sunset
-        offset: '00:10:00'
-    condition: []
-    action:
-      - service: frontend.set_theme
-        data:
-          name: |
-            {% if is_state('sun.sun', 'above_horizon') %}
-              "Custom Light Mode"
-            {% else %}
-              "Custom Dark Mode"
-            {% endif %}
-    mode: single
-  ```
-  </details>
   
   <details>
   	<summary>Motion Lights with time based brightnesses</summary>
