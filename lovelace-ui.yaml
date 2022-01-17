@@ -3,6 +3,108 @@ kiosk_mode:
     hide_header: true
     hide_sidebar: false
 button_card_templates:
+  room_card:
+    variables:
+      group: group.boudoir_lights
+      sensor: sensor.boudoir_lights_on
+      temp: sensor.boudoir_temperature
+      wid1:
+        type: custom:button-card
+        entity: switch.air_purifier
+        template: room_card_fan
+      wid2:
+        type: custom:button-card
+        entity: media_player.boudoir_system
+        template: room_card_media
+    show_label: true
+    label: |
+      [[[
+        if (states[variables.sensor].state > 0)
+          return states[variables.sensor].state + " lights on"
+        else
+          return "Lights off"
+      ]]]
+    name: |
+      [[[
+        return entity.attributes.friendly_name + " " +
+        `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
+        ${Math.round(states[variables.temp].state)}°F
+        </span>`
+      ]]]
+    tap_action:
+      haptic: medium
+      action: more-info
+    hold_action:
+      action: more-info
+    show_state: false
+    state:
+      - value: 'off'
+        styles:
+          icon:
+            - filter: grayscale(100%) opacity(50%)
+          name:
+            - filter: grayscale(100%) opacity(50%)
+          label:
+            - filter: grayscale(100%) opacity(50%)
+    styles:
+      card:
+        - padding: 5px
+      icon:
+        - width: 60px
+        - transition: filter 1s
+        - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
+      img_cell:
+        - width: 60px !important
+      label:
+        - place-self: start
+        - font-size: 20px
+        - overflow: visible
+      name:
+        - place-self: end
+        - justify-self: start
+        - font-size: 20px
+        - overflow: visible
+      grid:
+        - grid-template-columns: 17% 80px repeat(4, 1fr)
+        - grid-template-rows: 1fr 1fr
+        - grid-template-areas: |
+            "i n n wid1 wid2 lights"
+            "i l l wid1 wid2 lights"
+      custom_fields:
+        temp:
+          - place-self: center
+          - font-size: 18px
+          - background: rgba(255,255,255,.1)
+          - padding: 1px 3px
+          - border-radius: 15px
+          - mix-blend-mode: difference
+    custom_fields:
+      wid1:
+        card: '[[[ return variables.wid1 ]]]'
+      wid2:
+        card: '[[[ return variables.wid2 ]]]'
+      lights:
+        card:
+          type: custom:button-card
+          show_state: true
+          entity: '[[[ return variables.group ]]]'
+          icon: mdi:lamps
+          state:
+            - value: 'off'
+              styles:
+                icon:
+                  - filter: grayscale(100%) opacity(50%)
+                state:
+                  - filter: grayscale(100%) opacity(50%)
+          show_name: false
+          styles:
+            card:
+              - background: none
+              - box-shadow: none
+              - border-radius: 0
+            icon:
+              - width: 40px
+              - transition: filter 1s
   overlay_card:
     variables:
       background: var(--ha-card-background)
@@ -179,6 +281,14 @@ button_card_templates:
           icon:
             - filter: grayscale(100%)
   light:
+    label: |
+      [[[
+        var bri = entity.attributes.brightness;
+        if (entity.state === 'on')
+          return Math.ceil(bri / 255 * 100) + "%";
+        else
+          return "";
+      ]]]
     template: popup
     state:
       - value: 'on'
@@ -451,6 +561,19 @@ popup_cards:
             - type: entity
               entity: sensor.bathroom_hall_motion_sensor_temperature
               name: Front
+        - type: custom:button-card
+          name: Story Difference
+          show_state: true
+          state_display: |
+            [[[
+              var up = states['sensor.boudoir_temperature'].state;
+              var down = states['sensor.kitchen_temperature'].state;
+              var diff = up - down
+              return diff.toFixed(2) + " degree difference";
+            ]]]
+          styles:
+            state:
+              - color: var(--secondary-text-color)
         - type: history-graph
           entities:
             - entity: sensor.boudoir_temperature
@@ -725,49 +848,55 @@ popup_cards:
         }
         @media only screen and (min-width: 600px) {
           :host .content {
-            width: 50vw;
+
             margin: 10px auto;
           }
         }
     card:
-      type: custom:auto-entities
-      card:
-        type: custom:layout-card
-        layout_type: grid
-        layout:
-          place-content: center
-          grid-template-columns: repeat(auto-fit, 120px)
-          grid-template-rows: auto
-          grid-auto-rows: 120px
-          grid-gap: 0px
-      filter:
-        include:
-          - entity_id: light.boudoir
-            options:
-              type: entities
-              entities:
-                - type: custom:slider-entity-row
-                  entity: light.boudoir
-                  name: Brightness
-                  icon: mdi:brightness-7
-              view_layout:
-                grid-column: 1 / -1
-          - options:
-              type: custom:button-card
-              aspect_ratio: 1/1
-              template:
-                - grid_card
-                - light
-            group: group.boudoir_lights
-          - options:
-              type: custom:decluttering-card
+      type: custom:layout-card
+      layout_type: masonry
+      layout: {}
+      cards:
+        - type: custom:auto-entities
+          card:
+            type: custom:layout-card
+            layout_type: grid
+            layout:
+              place-content: center
+              grid-template-columns: repeat(auto-fit, 120px)
+              grid-template-rows: auto
+              grid-auto-rows: 120px
+              grid-gap: 0px
+          filter:
+            include:
+              - entity_id: light.boudoir
+                options:
+                  type: entities
+                  entities:
+                    - type: custom:slider-entity-row
+                      entity: light.boudoir
+                      name: Brightness
+                      icon: mdi:brightness-7
+                  view_layout:
+                    grid-column: 1 / -1
+              - options:
+                  type: custom:button-card
+                  aspect_ratio: 1/1
+                  template:
+                    - grid_card
+                    - light
+                group: group.boudoir_lights
+            exclude: []
+        - type: vertical-stack
+          cards:
+            - type: custom:decluttering-card
               template: mmp
               variables:
-                - entity: this.entity_id
-              view_layout:
-                grid-column: 1 / -1
-            entity_id: media_player.boudoir_system
-        exclude: []
+                - entity: media_player.boudoir_system
+            - type: custom:decluttering-card
+              template: mmp
+              variables:
+                - entity: media_player.sync_box
   input_boolean.cameratoggle:
     title: Arlo
     style:
@@ -1330,7 +1459,7 @@ popup_cards:
           show_header_toggle: false
           state_color: false
   input_boolean.sensorinfo:
-    title: Information
+    title: Servers
     style:
       .: |
         :host {
@@ -1338,281 +1467,118 @@ popup_cards:
           --secondary-background-color: var(--primary-background-color);
         }
         :host .content {
-          width: 90vw;
-          height 100vh;
+          width: max-content;
         }
     card:
-      type: custom:layout-card
-      layout_type: grid
-      layout:
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr))
-      cards:
-        - type: entities
+      type: entities
+      entities:
+        - type: custom:config-template-card
           entities:
-            - type: custom:bar-card
-              entities:
-                - entity: sensor.processor_use_percent
-                  name: CPU Usage
-                  severity:
-                    - from: '0'
-                      to: '80'
-                      color: forestgreen
-                - entity: sensor.processor_temperature
-                  min: '0'
-                  max: '150'
-                  decimal: '1'
-                  severity:
-                    - from: '0'
-                      to: '105'
-                      color: forestgreen
-                    - from: '105'
-                      to: '115'
-                      color: orange
-                  name: Temperature
-                  icon: mdi:thermometer
-                - entity: sensor.memory_free
-                  min: '0'
-                  max: '100'
-                  decimal: '1'
-                  name: RAM (Free)
-                  severity:
-                    - from: '1500'
-                      to: '4000'
-                      color: forestgreen
-                    - from: '0'
-                      to: '1500'
-                      color: red
-                - entity: sensor.disk_use_percent_home
-                  severity:
-                    - from: '0'
-                      to: '50'
-                      color: forestgreen
-                    - from: '51'
-                      to: '100'
-                      color: red
-                  name: SD Utilization
-              positions:
-                name: outside
-                icon: outside
-              entity_row: true
-              direction: right
-              columns: '1'
-            - entity: sensor.gonzo_host_ip
-              name: IP Address
-          show_header_toggle: false
-          footer:
-            type: graph
-            entity: sensor.gonzo_cpu_usage
-            hours_to_show: 48
-            detail: 2
-          title: Home Assistant OS
-          card_mod:
-            style: |
-              ha-card {
-                box-shadow: none;
-              }
-        - type: entities
+            - sensor.processor_temperature
+            - sensor.processor_use_percent
+          card:
+            type: custom:multiple-entity-row
+            entity: sensor.pudge_host_ip
+            show_state: false
+            name: HASS
+            icon: mdi:home-assistant
+            state_color: true
+            secondary_info: 192.168.50.184
+            entities:
+              - entity: sensor.processor_temperature
+                name: TEMP
+              - entity: sensor.processor_use_percent
+                name: CPU
+                styles:
+                  color: >-
+                    ${states['sensor.processor_use_percent'].state < '70' ?
+                    'green' : 'red'}
+              - entity: sensor.memory_free
+                name: RAM Free
+                styles:
+                  color: >-
+                    ${states['sensor.memory_free'].state < '70' ? 'green' :
+                    'red'}
+              - entity: sensor.disk_use_percent_home
+                name: Disk
+                styles:
+                  color: >-
+                    ${states['sensor.disk_use_percent_home'].state < '80' ?
+                    'green' : 'red'}
+        - type: divider
+        - type: custom:config-template-card
           entities:
-            - type: custom:uptime-card
-              entity: sensor.pudge_hostname
-              color:
-                title: var(--primary-text-color)
-                status: var(--accent-color)
-                icon: var(--accent-color)
-                tooltip: var(--primary-text-color)
-              bar:
-                round: 4
-              ok: raspberrypi
-              ko: unavailable
-              alias:
-                ok: Online
-                ko: Not Connected
-              tap_action:
-                action: more-info
-              name: Pudge (Raspberry Pi 4B)
-              icon: mdi:raspberry-pi
-              alignment:
-                status: spaced
-                header: spaced
-                icon_first: false
-              blink: {}
-              hours_to_show: 48
-              title_adaptive_color: false
-              status_adaptive_color: true
-              icon_adaptive_color: true
-              tooltip_adaptive_color: true
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: none;
-                  }
-            - type: custom:bar-card
-              entities:
-                - entity: sensor.pudge_cpu_usage
-                  name: CPU Usage
-                  severity:
-                    - from: '0'
-                      to: '80'
-                      color: forestgreen
-                - entity: sensor.pudge_temperature
-                  min: '0'
-                  max: '150'
-                  decimal: '1'
-                  severity:
-                    - from: '0'
-                      to: '105'
-                      color: forestgreen
-                    - from: '105'
-                      to: '115'
-                      color: orange
-                  name: Temperature
-                  icon: mdi:thermometer
-                - entity: sensor.pudge_memory_use
-                  min: '0'
-                  max: '100'
-                  decimal: '1'
-                  name: RAM
-                  severity:
-                    - from: '0'
-                      to: '50'
-                      color: forestgreen
-                    - from: '51'
-                      to: '100'
-                      color: red
-                - entity: sensor.pudge_disk_use
-                  severity:
-                    - from: '0'
-                      to: '50'
-                      color: forestgreen
-                    - from: '51'
-                      to: '100'
-                      color: red
-                  name: SD Utilization
-              positions:
-                name: outside
-                icon: inside
-              columns: '2'
-              entity_row: true
-              direction: up
-              height: 75px
-            - entity: sensor.pudge_host_ip
-              name: IP Address
-          footer:
-            type: graph
-            entity: sensor.pudge_cpu_usage
-            hours_to_show: 48
-            detail: 2
-          card_mod:
-            style: |
-              ha-card {
-                box-shadow: none;
-              }
-        - type: entities
+            - sensor.gonzo_hostname
+          card:
+            type: custom:multiple-entity-row
+            entity: sensor.gonzo_host_ip
+            show_state: false
+            name: Gonzo
+            icon: mdi:raspberry-pi
+            state_color: true
+            secondary_info: ${states['sensor.gonzo_host_ip'].state}
+            entities:
+              - entity: sensor.gonzo_temperature
+                name: TEMP
+                styles:
+                  color: >-
+                    ${states['sensor.gonzo_temperature'].state < '120' ? 'green'
+                    : 'red'}
+              - entity: sensor.gonzo_cpu_usage
+                name: CPU
+                styles:
+                  color: >-
+                    ${states['sensor.gonzo_cpu_usage'].state < '70' ? 'green' :
+                    'red'}
+              - entity: sensor.gonzo_memory_use
+                name: RAM
+                styles:
+                  color: >-
+                    ${states['sensor.gonzo_memory_use'].state < '70' ? 'green' :
+                    'red'}
+              - entity: sensor.gonzo_disk_use
+                name: Disk
+                styles:
+                  color: >-
+                    ${states['sensor.gonzo_disk_use'].state < '80' ? 'green' :
+                    'red'}
+        - type: divider
+        - type: custom:config-template-card
           entities:
-            - type: custom:uptime-card
-              entity: sensor.gonzo_hostname
-              color:
-                title: var(--primary-text-color)
-                status: var(--accent-color)
-                icon: var(--accent-color)
-                tooltip: var(--primary-text-color)
-              bar:
-                round: 4
-              ok: OfficePi
-              ko: unavailable
-              alias:
-                ok: Online
-                ko: Not Connected
-              tap_action:
-                action: more-info
-              name: Gonzo (Raspberry Pi 4)
-              icon: mdi:raspberry-pi
-              alignment:
-                status: spaced
-                header: spaced
-                icon_first: false
-              blink: {}
-              hours_to_show: 48
-              title_adaptive_color: false
-              status_adaptive_color: true
-              icon_adaptive_color: true
-              tooltip_adaptive_color: true
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: none;
-                  }
-            - type: custom:bar-card
-              entities:
-                - entity: sensor.gonzo_cpu_usage
-                  name: CPU Usage
-                  severity:
-                    - from: '0'
-                      to: '80'
-                      color: forestgreen
-                - entity: sensor.gonzo_temperature
-                  min: '0'
-                  max: '150'
-                  decimal: '1'
-                  severity:
-                    - from: '0'
-                      to: '105'
-                      color: forestgreen
-                    - from: '105'
-                      to: '115'
-                      color: orange
-                  name: Temperature
-                  icon: mdi:thermometer
-                - entity: sensor.gonzo_memory_use
-                  min: '0'
-                  max: '100'
-                  decimal: '1'
-                  name: RAM
-                  severity:
-                    - from: '0'
-                      to: '50'
-                      color: forestgreen
-                    - from: '51'
-                      to: '100'
-                      color: red
-                - entity: sensor.gonzo_disk_use
-                  severity:
-                    - from: '0'
-                      to: '50'
-                      color: forestgreen
-                    - from: '51'
-                      to: '100'
-                      color: red
-                  name: SD Utilization
-                - entity: sensor.gonzo_disk_use_drive1
-                  severity:
-                    - from: '0'
-                      to: '50'
-                      color: forestgreen
-                    - from: '51'
-                      to: '100'
-                      color: red
-                  name: 2TB Drive Utilization
-              positions:
-                name: outside
-                icon: inside
-              columns: '3'
-              entity_row: true
-              direction: up
-              height: 75px
-            - entity: sensor.gonzo_host_ip
-              name: IP Address
-          show_header_toggle: false
-          footer:
-            type: graph
-            entity: sensor.gonzo_cpu_usage
-            hours_to_show: 48
-            detail: 2
-          card_mod:
-            style: |
-              ha-card {
-                box-shadow: none;
-              }
+            - sensor.pudge_hostname
+          card:
+            type: custom:multiple-entity-row
+            entity: sensor.pudge_host_ip
+            show_state: false
+            name: Pudge
+            icon: mdi:raspberry-pi
+            state_color: true
+            secondary_info: ${states['sensor.pudge_host_ip'].state}
+            entities:
+              - entity: sensor.pudge_temperature
+                name: TEMP
+                styles:
+                  color: >-
+                    ${states['sensor.pudge_temperature'].state < '120' ? 'green'
+                    : 'red'}
+              - entity: sensor.pudge_cpu_usage
+                name: CPU
+                styles:
+                  color: >-
+                    ${states['sensor.pudge_cpu_usage'].state < '70' ? 'green' :
+                    'red'}
+              - entity: sensor.pudge_memory_use
+                name: RAM
+                styles:
+                  color: >-
+                    ${states['sensor.pudge_memory_use'].state < '70' ? 'green' :
+                    'red'}
+              - entity: sensor.pudge_disk_use
+                name: Disk
+                styles:
+                  color: >-
+                    ${states['sensor.pudge_disk_use'].state < '80' ? 'green' :
+                    'red'}
   input_boolean.floorplan:
     title: Floor Plan
     style:
@@ -1904,8 +1870,8 @@ decluttering_templates:
     card:
       type: custom:mini-media-player
       entity: '[[entity]]'
-      volume_stateless: true
-      artwork: material
+      volume_stateless: false
+      artwork: full-cover
       group: false
       info: scroll
       card_mod:
@@ -1934,7 +1900,7 @@ decluttering_templates:
       cards:
         - type: custom:config-template-card
           entities:
-            - light.desk_lamp
+            - light.hue_go
             - light.standing_lamp
             - light.boudoir_ceiling_light
             - light.nanoleaf
@@ -1952,7 +1918,7 @@ decluttering_templates:
             elements:
               - type: conditional
                 conditions:
-                  - entity: light.desk_lamp
+                  - entity: light.hue_go
                     state: 'on'
                 elements:
                   - type: image
@@ -2197,7 +2163,7 @@ decluttering_templates:
                   width: 7%
                   left: 90%
                   top: 7%
-                entity: light.desk_lamp
+                entity: light.hue_go
                 template: floorbutton
               - type: custom:button-card
                 style:
@@ -2418,6 +2384,7 @@ views:
       grid-column-gap: 10px
       grid-row-gap: 0px
       place-content: center
+      align-content: start center
       grid-template-rows: repeat(3, fit-content)
       grid-template-areas: |
         "time scenes media"
@@ -2438,13 +2405,14 @@ views:
             ". cc fp areas ."
         '(max-width: 600px)':
           grid-template-columns: 100%
+          place-content: center
           grid-template-areas: |
             "scenes"
             "media"
             "glance"
             "areas"
             "cc"
-    theme: ''
+    theme: Main
     icon: mdi:home
     type: custom:grid-layout
     badges: []
@@ -2502,466 +2470,6 @@ views:
         view_layout:
           grid-area: media
           place-self: end stretch
-      - type: vertical-stack
-        cards:
-          - type: custom:button-card
-            show_label: true
-            label: |
-              [[[
-                return states['sensor.boudoir_lights_on'].state + " lights on"
-              ]]]
-            name: |
-              [[[
-                return states['group.boudoir_lights'].attributes.friendly_name + " " +
-                `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
-                ${Math.round(states['sensor.boudoir_temperature'].state)}°F
-                </span>`
-              ]]]
-            entity: group.boudoir_lights
-            tap_action:
-              haptic: medium
-              action: more-info
-            hold_action:
-              action: more-info
-            show_state: false
-            state:
-              - value: 'off'
-                styles:
-                  icon:
-                    - filter: grayscale(100%) opacity(50%)
-                  name:
-                    - filter: grayscale(100%) opacity(50%)
-                  label:
-                    - filter: grayscale(100%) opacity(50%)
-            styles:
-              card:
-                - padding: 5px
-              icon:
-                - width: 60px
-                - transition: filter 1s
-                - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
-              img_cell:
-                - width: 60px !important
-              label:
-                - place-self: start
-                - font-size: 20px
-                - overflow: visible
-              name:
-                - place-self: end
-                - justify-self: start
-                - font-size: 20px
-                - overflow: visible
-              grid:
-                - grid-template-columns: 17% 80px repeat(4, 1fr)
-                - grid-template-rows: 1fr 1fr
-                - grid-template-areas: |
-                    "i n n wid1 wid2 lights"
-                    "i l l wid1 wid2 lights"
-              custom_fields:
-                temp:
-                  - place-self: center
-                  - font-size: 18px
-                  - background: rgba(255,255,255,.1)
-                  - padding: 1px 3px
-                  - border-radius: 15px
-                  - mix-blend-mode: difference
-            custom_fields:
-              wid1:
-                card:
-                  type: custom:button-card
-                  entity: switch.air_purifier
-                  template: room_card_fan
-              wid2:
-                card:
-                  type: custom:button-card
-                  entity: media_player.boudoir_system
-                  template: room_card_media
-              lights:
-                card:
-                  type: custom:button-card
-                  show_state: true
-                  entity: group.boudoir_lights
-                  icon: mdi:lamps
-                  state:
-                    - value: 'off'
-                      styles:
-                        icon:
-                          - filter: grayscale(100%) opacity(50%)
-                        state:
-                          - filter: grayscale(100%) opacity(50%)
-                  show_name: false
-                  styles:
-                    card:
-                      - background: none
-                      - box-shadow: none
-                      - border-radius: 0
-                    icon:
-                      - width: 40px
-                      - transition: filter 1s
-          - type: custom:button-card
-            show_label: true
-            label: |
-              [[[
-                return states['sensor.bedroom_lights_on'].state + " lights on"
-              ]]]
-            name: |
-              [[[
-                return states['group.bedroom_lights'].attributes.friendly_name + " " +
-                `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
-                ${Math.round(states['sensor.boudoir_temperature'].state)}°F
-                </span>`
-              ]]]
-            entity: group.bedroom_lights
-            tap_action:
-              haptic: medium
-              action: more-info
-            hold_action:
-              action: more-info
-            show_state: false
-            state:
-              - value: 'off'
-                styles:
-                  icon:
-                    - filter: grayscale(100%) opacity(50%)
-                  name:
-                    - filter: grayscale(100%) opacity(50%)
-                  label:
-                    - filter: grayscale(100%) opacity(50%)
-            styles:
-              card:
-                - padding: 5px
-              icon:
-                - width: 60px
-                - transition: filter 1s
-                - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
-              img_cell:
-                - width: 60px !important
-              label:
-                - place-self: start
-                - font-size: 20px
-                - overflow: visible
-              name:
-                - place-self: end
-                - justify-self: start
-                - font-size: 20px
-                - overflow: visible
-              grid:
-                - grid-template-columns: 17% 80px repeat(4, 1fr)
-                - grid-template-rows: 1fr 1fr
-                - grid-template-areas: |
-                    "i n n wid1 wid2 lights"
-                    "i l l wid1 wid2 lights"
-              custom_fields:
-                temp:
-                  - place-self: center
-                  - font-size: 18px
-                  - background: rgba(255,255,255,.1)
-                  - padding: 1px 3px
-                  - border-radius: 15px
-                  - mix-blend-mode: difference
-            custom_fields:
-              wid1:
-                card:
-                  type: custom:button-card
-                  entity: switch.bedroom_fan
-                  template: room_card_fan
-              wid2:
-                card:
-                  type: custom:button-card
-                  entity: media_player.bedroom_samsung
-                  template: room_card_media
-              lights:
-                card:
-                  type: custom:button-card
-                  show_state: true
-                  entity: group.bedroom_lights
-                  icon: mdi:lamps
-                  state:
-                    - value: 'off'
-                      styles:
-                        icon:
-                          - filter: grayscale(100%) opacity(50%)
-                        state:
-                          - filter: grayscale(100%) opacity(50%)
-                  show_name: false
-                  styles:
-                    card:
-                      - background: none
-                      - box-shadow: none
-                      - border-radius: 0
-                    icon:
-                      - width: 40px
-                      - transition: filter 1s
-          - type: custom:button-card
-            show_label: true
-            label: |
-              [[[
-                return states['sensor.office_lights_on'].state + " lights on"
-              ]]]
-            name: |
-              [[[
-                return states['group.office_lights'].attributes.friendly_name + " " +
-                `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
-                ${Math.round(states['sensor.bathroom_hall_motion_sensor_temperature'].state)}°F
-                </span>`
-              ]]]
-            entity: group.office_lights
-            tap_action:
-              haptic: medium
-              action: more-info
-            hold_action:
-              action: more-info
-            show_state: false
-            state:
-              - value: 'off'
-                styles:
-                  icon:
-                    - filter: grayscale(100%) opacity(50%)
-                  name:
-                    - filter: grayscale(100%) opacity(50%)
-                  label:
-                    - filter: grayscale(100%) opacity(50%)
-            styles:
-              card:
-                - padding: 5px
-              icon:
-                - width: 60px
-                - transition: filter 1s
-                - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
-              img_cell:
-                - width: 60px !important
-              label:
-                - place-self: start
-                - font-size: 20px
-                - overflow: visible
-              name:
-                - place-self: end
-                - justify-self: start
-                - font-size: 20px
-                - overflow: visible
-              grid:
-                - grid-template-columns: 17% 80px repeat(4, 1fr)
-                - grid-template-rows: 1fr 1fr
-                - grid-template-areas: |
-                    "i n n wid1 wid2 lights"
-                    "i l l wid1 wid2 lights"
-              custom_fields:
-                temp:
-                  - place-self: center
-                  - font-size: 18px
-                  - background: rgba(255,255,255,.1)
-                  - padding: 1px 3px
-                  - border-radius: 15px
-                  - mix-blend-mode: difference
-            custom_fields:
-              wid2:
-                card:
-                  type: custom:button-card
-                  entity: media_player.office_speaker
-                  template: room_card_media
-              lights:
-                card:
-                  type: custom:button-card
-                  show_state: true
-                  entity: group.office_lights
-                  icon: mdi:lamps
-                  state:
-                    - value: 'off'
-                      styles:
-                        icon:
-                          - filter: grayscale(100%) opacity(50%)
-                        state:
-                          - filter: grayscale(100%) opacity(50%)
-                  show_name: false
-                  styles:
-                    card:
-                      - background: none
-                      - box-shadow: none
-                      - border-radius: 0
-                    icon:
-                      - width: 40px
-                      - transition: filter 1s
-          - type: custom:button-card
-            show_label: true
-            label: |
-              [[[
-                return "Lights " + states['group.living_room_lights'].state
-              ]]]
-            name: |
-              [[[
-                return states['group.living_room_lights'].attributes.friendly_name + " " +
-                `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
-                ${Math.round(states['sensor.kitchen_temperature'].state)}°F
-                </span>`
-              ]]]
-            entity: group.living_room_lights
-            tap_action:
-              haptic: medium
-              action: more-info
-            hold_action:
-              action: more-info
-            show_state: false
-            state:
-              - value: 'off'
-                styles:
-                  icon:
-                    - filter: grayscale(100%) opacity(50%)
-                  name:
-                    - filter: grayscale(100%) opacity(50%)
-                  label:
-                    - filter: grayscale(100%) opacity(50%)
-            styles:
-              card:
-                - padding: 5px
-              icon:
-                - width: 60px
-                - transition: filter 1s
-                - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
-              img_cell:
-                - width: 60px !important
-              label:
-                - place-self: start
-                - font-size: 20px
-                - overflow: visible
-              name:
-                - place-self: end
-                - justify-self: start
-                - font-size: 20px
-                - overflow: visible
-              grid:
-                - grid-template-columns: 17% 80px repeat(4, 1fr)
-                - grid-template-rows: 1fr 1fr
-                - grid-template-areas: |
-                    "i n n wid1 wid2 lights"
-                    "i l l wid1 wid2 lights"
-              custom_fields:
-                temp:
-                  - place-self: center
-                  - font-size: 18px
-                  - background: rgba(255,255,255,.1)
-                  - padding: 1px 3px
-                  - border-radius: 15px
-                  - mix-blend-mode: difference
-            custom_fields:
-              lights:
-                card:
-                  type: custom:button-card
-                  show_state: true
-                  entity: light.living_room
-                  icon: mdi:lamps
-                  state:
-                    - value: 'off'
-                      styles:
-                        icon:
-                          - filter: grayscale(100%) opacity(50%)
-                        state:
-                          - filter: grayscale(100%) opacity(50%)
-                  show_name: false
-                  styles:
-                    card:
-                      - background: none
-                      - box-shadow: none
-                      - border-radius: 0
-                    icon:
-                      - width: 40px
-                      - transition: filter 1s
-          - type: custom:button-card
-            show_label: true
-            label: |
-              [[[
-                return "Lights " + states['light.kitchen'].state
-              ]]]
-            name: |
-              [[[
-                return states['light.kitchen'].attributes.friendly_name + " " +
-                `<span style="background: rgba(255,255,255,.1); padding: 1px 5px; border-radius: 20px;">
-                ${Math.round(states['sensor.kitchen_temperature'].state)}°F
-                </span>`
-              ]]]
-            entity: light.kitchen
-            tap_action:
-              haptic: medium
-              action: more-info
-            hold_action:
-              action: more-info
-            show_state: false
-            state:
-              - value: 'off'
-                styles:
-                  icon:
-                    - filter: grayscale(100%) opacity(50%)
-                  name:
-                    - filter: grayscale(100%) opacity(50%)
-                  label:
-                    - filter: grayscale(100%) opacity(50%)
-            styles:
-              card:
-                - padding: 5px
-              icon:
-                - width: 60px
-                - transition: filter 1s
-                - filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3))
-              img_cell:
-                - width: 60px !important
-              label:
-                - place-self: start
-                - font-size: 20px
-                - overflow: visible
-              name:
-                - place-self: end
-                - justify-self: start
-                - font-size: 20px
-                - overflow: visible
-              grid:
-                - grid-template-columns: 17% 80px repeat(4, 1fr)
-                - grid-template-rows: 1fr 1fr
-                - grid-template-areas: |
-                    "i n n wid1 wid2 lights"
-                    "i l l wid1 wid2 lights"
-              custom_fields:
-                temp:
-                  - place-self: center
-                  - font-size: 18px
-                  - background: rgba(255,255,255,.1)
-                  - padding: 1px 3px
-                  - border-radius: 15px
-                  - mix-blend-mode: difference
-            custom_fields:
-              wid1:
-                card:
-                  type: custom:button-card
-                  entity: vacuum.rug_b
-                  template: room_card_vacuum
-              wid2:
-                card:
-                  type: custom:button-card
-                  entity: media_player.kitchen_sonos
-                  template: room_card_media
-              lights:
-                card:
-                  type: custom:button-card
-                  show_state: true
-                  entity: light.kitchen
-                  icon: mdi:lamps
-                  state:
-                    - value: 'off'
-                      styles:
-                        icon:
-                          - filter: grayscale(100%) opacity(50%)
-                        state:
-                          - filter: grayscale(100%) opacity(50%)
-                  show_name: false
-                  styles:
-                    card:
-                      - background: none
-                      - box-shadow: none
-                      - border-radius: 0
-                    icon:
-                      - width: 40px
-                      - transition: filter 1s
-        view_layout:
-          grid-area: areas
-          place-self: stretch
       - type: entities
         entities:
           - type: custom:decluttering-card
@@ -2992,7 +2500,6 @@ views:
                 card_mod:
                   style: |
                     div.name {
-                      font-weight: bold;
                       font-size: 20px;
                     }
                     div.icon {
@@ -3022,7 +2529,6 @@ views:
                 card_mod:
                   style: |
                     div.name {
-                      font-weight: bold;
                       font-size: 20px;
                     }
                     ha-card span {
@@ -3045,7 +2551,6 @@ views:
                 card_mod:
                   style: |
                     div.name {
-                      font-weight: bold;
                       font-size: 20px;
                     }
                     ha-card span {
@@ -3067,7 +2572,6 @@ views:
                 card_mod:
                   style: |
                     div.name {
-                      font-weight: bold;
                       font-size: 20px;
                     }
             square: false
@@ -3148,13 +2652,15 @@ views:
                 icon: mdi:cog
                 layout: icon_name
                 template: overlay_card
+                styles:
+                  icon:
+                    - color: var(--primary-text-color)
         view_layout:
           grid-area: cc
           place-self: start stretch
         card_mod:
           style: |
             ha-card {
-              border-radius: var(--ha-card-border-radius);
               margin: 0px !important;
             }
             div#states.card-content {
@@ -3356,3 +2862,676 @@ views:
             div#states.card-content {
               padding: 10px;
             }
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            template: room_card
+            entity: group.boudoir_lights
+          - type: custom:button-card
+            template: room_card
+            entity: group.bedroom_lights
+            variables:
+              sensor: sensor.bedroom_lights_on
+              group: group.bedroom_lights
+              wid1:
+                type: custom:button-card
+                template: room_card_fan
+                entity: switch.bedroom_fan
+              wid2:
+                type: custom:button-card
+                template: room_card_media
+                entity: media_player.bedroom_chromecast
+          - type: custom:button-card
+            template: room_card
+            entity: group.office_lights
+            variables:
+              temp: sensor.bathroom_hall_motion_sensor_temperature
+              sensor: sensor.office_lights_on
+              group: group.office_lights
+              wid1: null
+              wid2:
+                type: custom:button-card
+                template: room_card_media
+                entity: media_player.office_speaker
+          - type: custom:button-card
+            template: room_card
+            entity: group.living_room_lights
+            label: |
+              [[[ return "Lights " + entity.state ]]]
+            variables:
+              temp: sensor.kitchen_temperature
+              group: group.living_room_lights
+              wid1: null
+              wid2: null
+          - type: custom:button-card
+            template: room_card
+            entity: light.kitchen
+            label: |
+              [[[ return "Lights " + entity.state ]]]
+            variables:
+              temp: sensor.kitchen_temperature
+              group: light.kitchen
+              wid2:
+                type: custom:button-card
+                template: room_card_media
+                entity: media_player.kitchen_sonos
+              wid1:
+                type: custom:button-card
+                template: room_card_vacuum
+                entity: vacuum.rug_b
+        view_layout:
+          grid-area: areas
+          place-self: stretch
+  - title: Stats
+    path: stats
+    icon: mdi:home-analytics
+    theme: ''
+    layout:
+      grid-template-columns: repeat(3, 1fr)
+      grid-auto-rows: 400px
+    badges: []
+    cards:
+      - type: custom:vertical-stack-in-card
+        title: Gonzo System Monitor
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.gonzo_cpu_usage
+                name: CPU
+                line_color: '#2980b9'
+                line_width: 2
+                hours_to_show: 24
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.gonzo_temperature
+                name: Temp
+                line_color: '#2980b9'
+                line_width: 2
+                hours_to_show: 24
+          - type: custom:bar-card
+            entity: sensor.gonzo_disk_use
+            name: SD Card
+            positions:
+              icon: outside
+              name: inside
+            color: '#00ba6a'
+          - type: custom:bar-card
+            entity: sensor.gonzo_memory_use
+            name: RAM
+            positions:
+              icon: outside
+              name: inside
+          - type: entities
+            state_color: true
+            entities:
+              - entity: sensor.gonzo_host_ip
+                name: IP Address
+              - entity: sensor.gonzo_updates
+                name: Updates Available
+              - entity: sensor.gonzo_last_boot
+                name: Last Boot
+              - entity: binary_sensor.pi_hole
+      - type: custom:vertical-stack-in-card
+        title: Pudge System Monitor
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.pudge_cpu_usage
+                name: CPU
+                line_color: '#2980b9'
+                line_width: 2
+                hours_to_show: 24
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.pudge_temperature
+                name: Temp
+                line_color: '#2980b9'
+                line_width: 2
+                hours_to_show: 24
+          - type: custom:bar-card
+            entity: sensor.pudge_disk_use
+            name: SD Card
+            positions:
+              icon: outside
+              name: inside
+            color: '#00ba6a'
+          - type: custom:bar-card
+            entity: sensor.pudge_memory_use
+            name: RAM
+            positions:
+              icon: outside
+              name: inside
+          - type: entities
+            entities:
+              - entity: sensor.pudge_updates
+                name: Updates Available
+              - entity: sensor.pudge_last_boot
+                name: Last Boot
+              - entity: sensor.pudge_host_ip
+      - type: custom:auto-entities
+        card:
+          type: grid
+          title: Camera & Lock Batteries
+          columns: 2
+          square: false
+        filter:
+          include:
+            - entity_id: /[Bb]attery/
+              options:
+                type: entity
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: 
+                        {% set state = states('this.entity_id') %}
+                        {% if state | float > 50 %}
+                          green
+                        {% elif state | float > 30 %}
+                          orange
+                        {% elif state | float < 15 %}
+                          red
+                        {% else %}
+                          orange
+                        {% endif %};
+          exclude:
+            - entity_id: /kfmawi/
+            - entity_id: /iphone/
+            - entity_id: /ipad/
+            - entity_id: /moto/
+            - entity_id: /pot/
+            - entity_id: device_tracker.nest_doorbell_battery
+        card_param: cards
+        sort:
+          method: domain
+      - type: custom:auto-entities
+        card:
+          type: entities
+          title: Pi-Hole
+          card_mod:
+            style: |
+              ha-card {
+                max-height: 450px;
+                overflow-y: auto;
+              }
+        filter:
+          include:
+            - entity_id: /pi_hole/
+              options: {}
+          exclude:
+            - entity_id: /kfmawi/
+            - entity_id: /iphone/
+            - entity_id: /ipad/
+            - entity_id: sensor.pi_hole_dns_queries_cached
+            - entity_id: sensor.pi_hole_dns_queries_forwarded
+        sort:
+          method: domain
+  - title: Health
+    path: health
+    icon: mdi:home-heart
+    badges: []
+    cards:
+      - type: custom:mini-graph-card
+        name: Steps (5 Days)
+        hours_to_show: 120
+        entities:
+          - sensor.logans_iphone_steps
+      - type: custom:mini-graph-card
+        name: Active Pace (5 Days)
+        hours_to_show: 120
+        entities:
+          - sensor.logans_iphone_average_active_pace
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: entity
+            entity: sensor.logans_iphone_steps
+            name: Today's Step
+          - type: entity
+            entity: sensor.logans_iphone_distance
+            name: Today's Walked Distance
+          - type: entity
+            entity: sensor.logans_iphone_average_active_pace
+            name: Today's Average Pace
+          - type: entity
+            entity: sensor.logans_iphone_last_update_trigger
+            name: Last Trigger
+  - title: Storage
+    path: storage
+    visible:
+      - user: 344bb350d71d49dd8f8891a9a9261e75
+    theme: ''
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:vacuum-card
+            image: >-
+              https://raw.githubusercontent.com/And3rsL/Deebot-for-Home-Assistant/1dff3fd705ab40b22a63b3653c19d2e2660118d2/docs/images/deebot950.svg
+            entity: vacuum.rug_b
+            compact_view: false
+            show_toolbar: true
+            show_status: true
+            stats:
+              default:
+                - entity_id: sensor.rug_b_life_span_brush
+                  subtitle: Main Brush
+                  unit: '%'
+                - entity_id: sensor.rug_b_life_span_side_brush
+                  subtitle: Side Brush
+                  unit: '%'
+                - entity_id: sensor.rug_b_life_span_filter
+                  subtitle: Filter
+                  unit: '%'
+                - entity_id: binary_sensor.rug_b_mop_attached
+                  subtitle: Mop
+              cleaning:
+                - entity_id: sensor.rug_b_stats_time
+                  subtitle: Total Time
+                  unit: m
+      - type: grid
+        cards:
+          - type: custom:button-card
+            entity: vacuum.rug_b
+            tap_action:
+              action: more-info
+            show_label: true
+            show_state: true
+            state_display: |
+              [[[
+                if (states['vacuum.rug_b'].state == "cleaning")
+                  return states['sensor.rug_b_stats_time'].state
+                  + " mins";
+                else
+                  return states['vacuum.rug_b'].state;
+              ]]]
+            name: |
+              [[[
+                if (states['vacuum.rug_b'].state == "docked")
+                  return "Start Cleaning";
+                else
+                  return "Cleaning...";
+              ]]]
+            label: |
+              [[[
+                return (states['vacuum.rug_b'].attributes.battery_level)
+                + "%"
+                + `<ha-icon
+                      icon="mdi:battery"
+                      style="width: 20px; height: 20px;">
+                      </ha-icon>`
+              ]]]
+            styles:
+              grid:
+                - grid-template-columns: 1fr 1fr 30%
+                - grid-template-rows: repeat(2, 50px)
+                - grid-template-areas: |
+                    "n n i"
+                    "s s l"
+              name:
+                - justify-self: start
+                - margin-left: 1vw
+                - font-weight: bold
+                - font-size: 1.4vw
+                - color: var(--accent-color)
+              state:
+                - justify-self: start
+                - margin-left: 1vw
+                - text-transform: capitalize
+                - font-size: 20px
+            state:
+              - value: cleaning
+                styles:
+                  name:
+                    - animation: blink 3s ease infinite
+        square: false
+        columns: 1
+      - type: vertical-stack
+        cards:
+          - type: custom:auto-entities
+            card:
+              type: custom:layout-card
+              layout_type: grid
+              layout:
+                place-content: center
+                grid-template-columns: repeat(auto-fit, 120px)
+                grid-template-rows: auto
+                grid-auto-rows: 120px
+                grid-gap: 0px
+            filter:
+              include:
+                - entity_id: light.boudoir
+                  options:
+                    type: custom:my-slider
+                    radius: 20px
+                    view_layout:
+                      grid-column: 1 / -1
+                - group: group.boudoir_lights
+                  options:
+                    type: custom:button-card
+                    aspect_ratio: 1/1
+                    variables:
+                      entity: this.entity_id
+                    template:
+                      - grid_card
+                      - light
+              exclude: []
+          - type: vertical-stack
+            cards:
+              - type: custom:decluttering-card
+                template: mmp
+                variables:
+                  - entity: media_player.boudoir_system
+              - type: custom:decluttering-card
+                template: mmp
+                variables:
+                  - entity: media_player.sync_box
+      - type: grid
+        cards:
+          - type: custom:button-card
+            entity: media_player.boudoir_system
+            show_entity_picture: true
+            tap_action:
+              action: more-info
+            show_state: true
+            show_label: true
+            show_icon: true
+            state_display: |
+              [[[
+                return entity.attributes.media_title
+              ]]]
+            label: |
+              [[[
+                return entity.attributes.mode;
+              ]]]
+            styles:
+              icon:
+                - width: 60%
+                - aspect-ratio: 1/1
+                - object-fit: cover
+                - border-radius: 50%
+              grid:
+                - align-content: center
+                - grid-template-columns: 35% repeat(2, min-content)
+                - grid-template-rows: repeat(2, min-content) auto
+                - grid-template-areas: |
+                    "i n n "
+                    "i s l"
+              state:
+                - align-self: end
+                - justify-self: start
+                - filter: opacity(70%)
+              label:
+                - align-self: center
+                - justify-self: start
+                - filter: opacity(70%)
+              name:
+                - align-self: end
+                - justify-self: start
+                - overflow: visible
+                - font-size: 20px
+              card:
+                - text-transform: capitalize
+                - padding: 10px
+            state:
+              - value: playing
+                styles:
+                  state:
+                    - color: var(--accent-color)
+          - type: custom:button-card
+            entity: media_player.sync_box
+            tap_action:
+              action: more-info
+            show_state: true
+            show_label: true
+            show_icon: true
+            label: |
+              [[[
+                return entity.attributes.mode;
+              ]]]
+            styles:
+              icon:
+                - width: 55%
+              grid:
+                - align-content: center
+                - grid-template-columns: 35% 1fr 1fr
+                - grid-template-rows: repeat(2, min-content) auto
+                - grid-template-areas: |
+                    "i n n "
+                    "i s l"
+              state:
+                - align-self: end
+                - justify-self: start
+                - filter: opacity(70%)
+              label:
+                - align-self: center
+                - justify-self: start
+                - filter: opacity(70%)
+              name:
+                - align-self: end
+                - justify-self: start
+                - overflow: visible
+                - font-size: 20px
+              card:
+                - text-transform: capitalize
+                - padding: 10px
+            state:
+              - value: playing
+                styles:
+                  icon:
+                    - color: var(--accent-color)
+        columns: 2
+        square: false
+      - type: entities
+        entities:
+          - type: custom:config-template-card
+            entities:
+              - sensor.processor_temperature
+              - sensor.processor_use_percent
+            card:
+              type: custom:multiple-entity-row
+              entity: sensor.pudge_host_ip
+              show_state: false
+              name: HASS
+              icon: mdi:home-assistant
+              state_color: true
+              secondary_info: 192.168.50.184
+              entities:
+                - entity: sensor.processor_temperature
+                  name: TEMP
+                - entity: sensor.processor_use_percent
+                  name: CPU
+                  styles:
+                    color: >-
+                      ${states['sensor.processor_use_percent'].state < '70' ?
+                      'green' : 'red'}
+                - entity: sensor.memory_free
+                  name: RAM Free
+                  styles:
+                    color: >-
+                      ${states['sensor.memory_free'].state < '70' ? 'green' :
+                      'red'}
+                - entity: sensor.disk_use_percent_home
+                  name: Disk
+                  styles:
+                    color: >-
+                      ${states['sensor.disk_use_percent_home'].state < '80' ?
+                      'green' : 'red'}
+          - type: divider
+          - type: custom:config-template-card
+            entities:
+              - sensor.gonzo_hostname
+            card:
+              type: custom:multiple-entity-row
+              entity: sensor.gonzo_host_ip
+              show_state: false
+              name: Gonzo
+              icon: mdi:raspberry-pi
+              state_color: true
+              secondary_info: ${states['sensor.gonzo_host_ip'].state}
+              entities:
+                - entity: sensor.gonzo_temperature
+                  name: TEMP
+                  styles:
+                    color: >-
+                      ${states['sensor.gonzo_temperature'].state < '120' ?
+                      'green' : 'red'}
+                - entity: sensor.gonzo_cpu_usage
+                  name: CPU
+                  styles:
+                    color: >-
+                      ${states['sensor.gonzo_cpu_usage'].state < '70' ? 'green'
+                      : 'red'}
+                - entity: sensor.gonzo_memory_use
+                  name: RAM
+                  styles:
+                    color: >-
+                      ${states['sensor.gonzo_memory_use'].state < '70' ? 'green'
+                      : 'red'}
+                - entity: sensor.gonzo_disk_use
+                  name: Disk
+                  styles:
+                    color: >-
+                      ${states['sensor.gonzo_disk_use'].state < '80' ? 'green' :
+                      'red'}
+          - type: divider
+          - type: custom:config-template-card
+            entities:
+              - sensor.pudge_hostname
+            card:
+              type: custom:multiple-entity-row
+              entity: sensor.pudge_host_ip
+              show_state: false
+              name: Pudge
+              icon: mdi:raspberry-pi
+              state_color: true
+              secondary_info: ${states['sensor.pudge_host_ip'].state}
+              entities:
+                - entity: sensor.pudge_temperature
+                  name: TEMP
+                  styles:
+                    color: >-
+                      ${states['sensor.pudge_temperature'].state < '120' ?
+                      'green' : 'red'}
+                - entity: sensor.pudge_cpu_usage
+                  name: CPU
+                  styles:
+                    color: >-
+                      ${states['sensor.pudge_cpu_usage'].state < '70' ? 'green'
+                      : 'red'}
+                - entity: sensor.pudge_memory_use
+                  name: RAM
+                  styles:
+                    color: >-
+                      ${states['sensor.pudge_memory_use'].state < '70' ? 'green'
+                      : 'red'}
+                - entity: sensor.pudge_disk_use
+                  name: Disk
+                  styles:
+                    color: >-
+                      ${states['sensor.pudge_disk_use'].state < '80' ? 'green' :
+                      'red'}
+        title: Servers
+      - type: vertical-stack
+        cards:
+          - type: custom:auto-entities
+            card:
+              type: custom:layout-card
+              layout_type: grid
+              layout:
+                place-content: center
+                grid-template-columns: repeat(auto-fit, 120px)
+                grid-template-rows: auto
+                grid-auto-rows: 120px
+                grid-gap: 0px
+            filter:
+              include:
+                - entity_id: group.bedroom_lights
+                  options:
+                    type: custom:my-slider
+                    radius: 20px
+                    view_layout:
+                      grid-column: 1 / -1
+                - group: group.bedroom_lights
+                  options:
+                    type: custom:button-card
+                    aspect_ratio: 1/1
+                    variables:
+                      entity: this.entity_id
+                    template:
+                      - grid_card
+                      - light
+              exclude: []
+          - type: vertical-stack
+            cards:
+              - type: custom:decluttering-card
+                template: mmp
+                variables:
+                  - entity: media_player.b_chromecast
+  - title: DEV
+    path: dev
+    theme: ''
+    type: custom:vertical-layout
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            template: room_card
+            entity: group.boudoir_lights
+          - type: custom:button-card
+            template: room_card
+            entity: group.bedroom_lights
+            variables:
+              sensor: sensor.bedroom_lights_on
+              group: group.bedroom_lights
+              wid1:
+                type: custom:button-card
+                template: room_card_fan
+                entity: switch.bedroom_fan
+              wid2:
+                type: custom:button-card
+                template: room_card_media
+                entity: media_player.bedroom_chromecast
+          - type: custom:button-card
+            template: room_card
+            entity: group.office_lights
+            variables:
+              temp: sensor.bathroom_hall_motion_sensor_temperature
+              sensor: sensor.office_lights_on
+              group: group.office_lights
+              wid1: null
+              wid2:
+                type: custom:button-card
+                template: room_card_media
+                entity: media_player.office_speaker
+          - type: custom:button-card
+            template: room_card
+            entity: group.living_room_lights
+            label: |
+              [[[ return "Lights " + entity.state ]]]
+            variables:
+              temp: sensor.kitchen_temperature
+              group: group.living_room_lights
+              wid1: null
+              wid2: null
+          - type: custom:button-card
+            template: room_card
+            entity: light.kitchen
+            label: |
+              [[[ return "Lights " + entity.state ]]]
+            variables:
+              temp: sensor.kitchen_temperature
+              group: light.kitchen
+              wid2:
+                type: custom:button-card
+                template: room_card_media
+                entity: media_player.kitchen_sonos
+              wid1:
+                type: custom:button-card
+                template: room_card_vacuum
+                entity: vacuum.rug_b
